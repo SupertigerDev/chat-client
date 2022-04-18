@@ -1,10 +1,12 @@
 import { Routes, Route, Link } from "react-router-dom";
+import AppPage from "./pages/AppPage";
 import LoginPage from "./pages/LoginPage";
 
 export default function Router() {
   return (
     <Routes>
       <Route index element={<Home />} />
+      <Route path="app" element={<AppPage />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<Register />} />
       <Route path="*" element={<NoMatch />} />
