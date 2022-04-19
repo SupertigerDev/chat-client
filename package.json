@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "chat-api": "file:../chat-api",
     "preact": "^10.5.15",
     "react-router-dom": "^6.3.0"
   },

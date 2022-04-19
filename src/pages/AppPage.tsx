@@ -1,10 +1,15 @@
-import { useEffect, useRef } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import styles from './AppPage.module.scss';
-
+import {Client} from 'chat-api';
 const DRAWER_WIDTH = 240;
+
 
 export default function AppPage() {
 
+  useEffect(() => {
+    const client = new Client();
+    client.login(localStorage['token']);
+  }, [])
 
   return (
     <div className={styles.appPage}>
