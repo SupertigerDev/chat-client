@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "chat-api": "file:../chat-api",
+    "mobx-react-lite": "^3.3.0",
     "preact": "^10.5.15",
     "react-router-dom": "^6.3.0"
   },

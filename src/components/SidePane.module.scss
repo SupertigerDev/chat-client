@@ -1,0 +1,61 @@
+.sidePane {
+  background: rgba(0, 0, 0, 0.6);
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.serverList {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  align-items: center;
+  gap: 3px;
+  margin-top: 5px;
+}
+
+.serverItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  width: 60px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+  
+  &:hover,
+  &[selected] {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  
+  &:after {
+    content: '';
+    position: absolute;
+    left: 1px;
+    width: 4px;
+    border-radius: 3px;
+    height: 30px;
+  }  
+  &[selected]:after {
+    background-color: var(--primary-color);
+  }  
+}
+
+.avatar {
+  height: 45px;
+  width: 45px;
+  border-radius: 45px;
+  flex-shrink: 0;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

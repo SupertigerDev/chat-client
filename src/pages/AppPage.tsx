@@ -1,13 +1,14 @@
 import { useEffect } from 'preact/hooks';
 import styles from './AppPage.module.scss';
-import {Client} from 'chat-api';
+import { client } from '../common/client';
+import SidePane from '../components/SidePane';
+
 const DRAWER_WIDTH = 240;
 
 
 export default function AppPage() {
-
+  
   useEffect(() => {
-    const client = new Client();
     client.login(localStorage['token']);
   }, [])
 
@@ -21,12 +22,6 @@ export default function AppPage() {
   )
 }
 
-
-function SidePane () {
-  return <div className={styles.sidePane}>
-    Side Pane
-  </div>
-}
 function MainPane () {
   return <div className={styles.mainPane}>
     MainPage
