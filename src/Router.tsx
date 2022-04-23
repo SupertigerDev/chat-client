@@ -8,7 +8,7 @@ export default function Router() {
       <Route index element={<Home />} />
       <Route path="app" element={<AppPage />} />
 
-      <Route path="app/servers/:serverId/:channelId" element={<AppPage />} />
+      <Route path="app/servers/:serverId/:channelId" element={<AppPage routeName="servers" />} />
 
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<Register />} />

@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "chat-api": "file:../chat-api",
+    "material-icons": "^1.10.8",
+    "mobx": "^6.5.0",
     "mobx-react-lite": "^3.3.0",
     "preact": "^10.5.15",
     "react-router-dom": "^6.3.0"
