@@ -17,6 +17,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+textarea {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 #app {
   display: flex;

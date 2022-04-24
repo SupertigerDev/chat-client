@@ -4,6 +4,7 @@ import { client } from '../common/client';
 import SidePane from '../components/SidePane';
 import Tabs from '../components/Tabs';
 import ServerDrawer from '../components/ServerDrawer';
+import MessagePane from '../components/MessagePane';
 
 const DRAWER_WIDTH = 240;
 
@@ -19,22 +20,22 @@ export default function AppPage(props: {routeName?: string}) {
     <div className={styles.appPage}>
       <SidePane />
       <LeftPane width={DRAWER_WIDTH} routeName={props.routeName} />
-      <MainPane/>
+      <MainPane routeName={props.routeName}/>
       <RightPane width={DRAWER_WIDTH}/>
     </div>
   )
 }
 
-function MainPane () {
+function MainPane (props: {routeName?: string}) {
   return <div className={styles.mainPane}>
     <Tabs />
-    MainPage
+    {props.routeName === 'server_messages' && <MessagePane />}
   </div>
 }
 
 function LeftPane (props: {width: number, routeName?: string}) {
   return <div style={{width: `${props.width}px`}} className={styles.leftPane}>
-    {props.routeName === 'servers' && <ServerDrawer />}
+    {props.routeName === 'server_messages' && <ServerDrawer />}
 
   </div>
 }
