@@ -22,7 +22,7 @@ function Header (props: {server?: Server}) {
   return (
     <div className={styles.header}>
       <div>{props.server?.name}</div>
-      <Icon name='expand_more' className={styles.showMoreIcon} />
+      <Icon size={18} name='expand_more' className={styles.showMoreIcon} />
     </div>
   )
 }
