@@ -4,6 +4,7 @@ import { client } from '../common/client';
 import styles from './SidePane.module.scss';
 import { Link, useParams } from "react-router-dom";
 import { Icon } from './Icon';
+import Avatar from './Avatar';
 
 
 export default function SidePane () {
@@ -26,9 +27,7 @@ const  ServerList = observer(() => {
 function ServerItem(props: {server: Server, selected?: boolean}) {
   const { _id, defaultChannel } = props.server;
   return <Link to={`/app/servers/${_id}/${defaultChannel}`} className={styles.item} selected={props.selected} >
-    <div className={styles.avatar} style={{backgroundColor: props.server.hexColor}}>
-      <img className={styles.avatarImage} src="/assets/avatar.png" alt="" />
-    </div>
+    <Avatar size={35} hexColor={props.server.hexColor} />
   </Link>
 }
 function Item(props: {iconName: string, selected?: boolean}) {

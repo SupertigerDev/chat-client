@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 export interface Tab {
   title: string;
+  iconName?: string;
   path: string;
   userId?: string;
   serverId?: string;
