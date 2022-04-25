@@ -23,15 +23,28 @@ export default TabList;
 
 const TabItem = observer((props: {tab: Tab}) => {
   const [server, setServer] = useState<Server | null>(null);
+
   useEffect(() => {
       const server = client.servers.cache[props.tab.serverId!];
       if (!server) return;
       setServer(server);
-  }, [props.tab])
+  }, [props.tab]);
+
+  const onDoubleClick = () => {
+    store.tabStore.updateTab(props.tab.path, {opened: true})
+  }
+
+  const onClick = () => {
+    store.tabStore.selectTab(props.tab.path);
+  }
+
+  const selected = store.tabStore.selectedTabPath === props.tab.path
+
   return (
-    <div className={styles.tab} selected={true}>
+    <div className={styles.tab} selected={selected} onDblClick={onDoubleClick} onClick={onClick}>
       {/* <Icon name={props.icon} size={20} className={styles.icon} /> */}
-      {server && <Avatar size={25} hexColor={server.hexColor} />}
+      {server && <Avatar size={
+      25} hexColor={server.hexColor} />}
       <div className={styles.details}>
         <div className={styles.title}>{props.tab.title}</div>
         {server && <div className={styles.subTitle}>{server.name}</div>}

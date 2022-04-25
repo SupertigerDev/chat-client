@@ -32,6 +32,12 @@ export class TabStore {
 
     this.selectTab(tab.path);
   }
+  updateTab(path: string, tab: Partial<Tab>) {
+    const tabIndex = this.tabs.findIndex(t => t.path === path);
+    if (tabIndex >= 0) {
+      this.tabs[tabIndex] = { ...this.tabs[tabIndex], ...tab };
+    }
+  }
 
   selectTab(path: string) {
     const tab = this.tabs.find(tab => tab.path === path);
