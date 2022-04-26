@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 export interface Tab {
   title: string;
@@ -20,17 +20,22 @@ export class TabStore {
   }
   
   openTab(tab: Omit<Tab, 'opened'>) {
-    const tabAlreadyOpened = this.selectTab(tab.path);
-    if (tabAlreadyOpened) return;
-
-    const unopenedTabIndex = this.tabs.findIndex(t => !t.opened);
-    if (unopenedTabIndex >= 0) {
-      this.tabs[unopenedTabIndex] = {...tab, opened: false};
-    } else {
-      this.tabs.push({...tab, opened: false});
-    }
-
-    this.selectTab(tab.path);
+    runInAction(() => {
+      const tabAlreadyOpened = this.tabs.find(_tab => _tab.path === tab.path);
+      if (tabAlreadyOpened) {
+        this.selectTab(tab.path);
+        return;
+      };
+  
+      const unopenedTabIndex = this.tabs.findIndex(t => !t.opened);
+      if (unopenedTabIndex >= 0) {
+        this.tabs[unopenedTabIndex] = {...tab, opened: false};
+      } else {
+        this.tabs.push({...tab, opened: false});
+      }
+  
+      this.selectTab(tab.path);
+    })
   }
   updateTab(path: string, tab: Partial<Tab>) {
     const tabIndex = this.tabs.findIndex(t => t.path === path);
@@ -40,10 +45,11 @@ export class TabStore {
   }
 
   selectTab(path: string) {
-    const tab = this.tabs.find(tab => tab.path === path);
-    if (!tab) return false;
-    this.selectedTabPath = tab.path;
-    return true;
+    runInAction(() => {
+      const tab = this.tabs.find(tab => tab.path === path);
+      if (!tab) return;
+      this.selectedTabPath = tab.path;
+    });
   }
   
   closeTab(path: string) {

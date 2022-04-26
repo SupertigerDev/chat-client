@@ -2,6 +2,7 @@ import { Server } from 'chat-api/build/store/Servers';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'preact/hooks';
+import { useNavigate } from 'react-router-dom';
 import { client } from '../common/client';
 import { store } from '../store/Store';
 import { Tab } from '../store/TabStore';
@@ -10,7 +11,14 @@ import { Icon } from './Icon';
 import styles from './Tabs.module.scss';
 
 export const TabList = observer(() => {
-  const tabs = store.tabStore.tabs;
+  const {tabs, selectedTabPath} = store.tabStore;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedTabPath) return;
+    navigate("/app" + selectedTabPath);
+  }, [selectedTabPath])
+
   return (
     <div className={styles.tabs}>
       {tabs.map(tab => <TabItem tab={tab} />)}

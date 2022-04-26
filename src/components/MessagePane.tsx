@@ -17,7 +17,7 @@ export default function MessagePane() {
       store.tabStore.openTab({
         title: channel.name,
         serverId: serverId!,
-        path: `/servers/${serverId}/channels/${channelId}`,
+        path: `/servers/${serverId}/${channelId}`,
       });
     })
 
