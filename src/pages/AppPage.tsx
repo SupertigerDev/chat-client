@@ -21,7 +21,7 @@ export default function AppPage(props: {routeName?: string}) {
       <SidePane />
       <LeftPane width={DRAWER_WIDTH} routeName={props.routeName} />
       <MainPane routeName={props.routeName}/>
-      <RightPane width={DRAWER_WIDTH}/>
+      {props.routeName === "server_messages" && <RightPane width={DRAWER_WIDTH}/>}
     </div>
   )
 }

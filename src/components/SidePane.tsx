@@ -5,13 +5,18 @@ import styles from './SidePane.module.scss';
 import { Link, useParams } from "react-router-dom";
 import { Icon } from './Icon';
 import Avatar from './Avatar';
+import Modal from './Modal';
+import { useState } from 'preact/hooks';
+import { AddServer } from './AddServer';
 
 
 export default function SidePane () {
+  const [showAddServerModel, setShowAddServerModel] = useState(false);
   return <div className={styles.sidePane}>
     <div className={styles.scrollable}>
+      <Modal show={showAddServerModel} component={() => <AddServer />} />
       <ServerList />
-      <Item iconName='add_box' />
+      <Item iconName='add_box' onClick={() => setShowAddServerModel(true)}  />
     </div>
   </div>
 }
@@ -30,8 +35,8 @@ function ServerItem(props: {server: Server, selected?: boolean}) {
     <Avatar size={35} hexColor={props.server.hexColor} />
   </Link>
 }
-function Item(props: {iconName: string, selected?: boolean}) {
-  return <div className={styles.item} selected={props.selected} >
+function Item(props: {iconName: string, selected?: boolean, onClick?: () => void}) {
+  return <div className={styles.item} selected={props.selected} onClick={props.onClick} >
     <Icon name={props.iconName} size={40} />
   </div>
 }
