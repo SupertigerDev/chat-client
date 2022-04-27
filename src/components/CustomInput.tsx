@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
-import styles from './Input.module.scss';
+import styles from './CustomInput.module.scss';
 
 interface Props {
   label: string, 

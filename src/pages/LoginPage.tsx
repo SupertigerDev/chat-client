@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Input from '../components/Input';
+import CustomInput from '../components/CustomInput';
 import { loginRequest } from '../services/UserService';
 import styles from './LoginPage.module.scss';
 import {useEffect, useState} from 'preact/hooks';
@@ -33,8 +33,8 @@ export default function LoginPage() {
   return <div className={styles.loginPage}>
     <div className={styles.container}>
       <div className={styles.title}>Login to continue</div>
-      <Input label='Email' type='email' error={error} onText={setEmail} />
-      <Input label='Password' type='password' error={error} onText={setPassword} />
+      <CustomInput label='Email' type='email' error={error} onText={setEmail} />
+      <CustomInput label='Password' type='password' error={error} onText={setPassword} />
       <Button label={requestSent ? 'Logging in...' : 'Login'} onClick={loginClicked} />
       <Link className={styles.link} to="/register">Create an account instead</Link>
     </div>
