@@ -1,3 +1,8 @@
+import styles from './AddServer.module.scss';
+import { Icon } from "./Icon";
+
 export function AddServer() {
-  return <div>This is a popup modal example!</div>
+  return <div>
+    <Icon name="dns" size={30} className={styles.icon} />
+  </div>
 }
