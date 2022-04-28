@@ -51,13 +51,12 @@ const TabItem = observer((props: {tab: Tab}) => {
   return (
     <div className={styles.tab} selected={selected} onDblClick={onDoubleClick} onClick={onClick}>
       {/* <Icon name={props.icon} size={20} className={styles.icon} /> */}
-      {server && <Avatar size={
-      25} hexColor={server.hexColor} />}
+      {server && <Avatar size={20} hexColor={server.hexColor} />}
       <div className={styles.details}>
         <div className={styles.title}>{props.tab.title}</div>
         {server && <div className={styles.subTitle}>{server.name}</div>}
       </div>
-      <Icon name="close" size={20} className={styles.closeIcon} />
+      <Icon name="close" size={14} className={styles.closeIcon} />
     </div>
   )
 })

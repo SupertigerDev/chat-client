@@ -8,36 +8,63 @@
 }
 
 .tab {
+  position: relative;
   display: flex;
+  min-width: 50px;
   flex: 1;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.09);
   border-radius: 4px;
   margin: 3px;
   margin-left: 2px;
   margin-right: 2px;
   padding-left: 5px;
   padding-right: 2px;
-  border: solid 1px transparent;
-  border-bottom: solid 2px rgba(255, 255, 255, 0.4);
   cursor: pointer;
   user-select: none;
   color: rgba(255, 255, 255, 0.6);
   transition: 0.2s;
+  
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    left: -2.6px;
+    right: -4px;
+    border-left: solid 1px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    transition: 0.2s;
+  }
+
+
+  
+  &[selected]:last-child:after {
+    border-right: solid 1px rgba(255, 255, 255, 0);
+  }
+  
+  &:first-child:after,
+  &[selected]:after,
+  &[selected] + div:after {
+    border-left: solid 1px rgba(255, 255, 255, 0);
+  }
+  
+  &:last-child:after {
+    border-right: initial;
+  }
+
 
   &:hover {
-    border: solid 1px rgba(255, 255, 255, 0.2);
-    background-color: rgba(0, 0, 0, 0.4);
-    border-bottom: solid 2px rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.1);
     .closeIcon {
       opacity: 1;
     }
   }
+
+  
   
   &[selected] {
-    border: solid 1px rgba(255, 255, 255, 0.2);
-    background-color: rgba(0, 0, 0, 0.4);
-    border-bottom: solid 2px var(--primary-color);
+    background-color: rgba(255, 255, 255, 0.2);
     color: white;
     .closeIcon {
       opacity: 1;
@@ -46,17 +73,19 @@
 
   .details {
     margin-left: 5px;
-    margin-bottom: 1px;
+    overflow: hidden;
   }
 
   .title {
     font-size: 14px;
-    margin-bottom: -2px;
   }
 
   .subTitle {
     opacity: 0.6;
     font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    // text-overflow: ellipsis;
   }
 
 
@@ -67,7 +96,6 @@
   .closeIcon {
     margin-left: auto;
     padding: 3px;
-    margin-bottom: 2px;
     margin-right: 5px;
     border-radius: 4px;
     transition: 0.2s;
