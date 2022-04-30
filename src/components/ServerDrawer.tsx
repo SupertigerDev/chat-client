@@ -2,6 +2,7 @@ import { ServerChannel } from 'chat-api/build/store/Channels';
 import { Server } from 'chat-api/build/store/Servers';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'preact/hooks';
 import { Link, useParams } from 'react-router-dom';
 import { client } from '../common/client';
 import { Icon } from './Icon';
@@ -40,6 +41,7 @@ function ChannelList(props: {server: Server}) {
 
 function Channel(props: {channel: ServerChannel, selected: boolean}) {
   const { channel } = props;
+
   return (
     <Link to={`/app/servers/${channel.server}/${channel._id}`} className={styles.channel} selected={props.selected}>
       <div className={styles.channelName}>{channel.name}</div>
