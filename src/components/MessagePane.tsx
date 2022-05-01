@@ -1,7 +1,7 @@
 import { Message } from 'chat-api/build/common/Message';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { useParams } from 'react-router-dom';
 import { client } from '../common/client';
 import { store } from '../store/Store';
@@ -36,27 +36,51 @@ export default function MessagePane() {
   );
 }
 
+// make a function where if the number is less than 10, it will add a 0 in front of it
+function pad(num: number) {
+  return num < 10 ? `0${num}` : num;
+}
+
 // convert timestamp to today at 13:00 or yesterday at 13:00 or date. add zero if single digit
 function formatTimestamp(timestamp: number) {
   const date = new Date(timestamp);
   const today = new Date();
   const yesterday = new Date(today.getTime() - 86400000);
   if (date.getDate() === today.getDate()) {
-    return `Today at ${date.getHours()}:${date.getMinutes()}`;
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
   } else if (date.getDate() === yesterday.getDate()) {
-    return `Yesterday at ${date.getHours()}:${date.getMinutes()}`;
+    return `Yesterday at ${pad(date.getHours())}:${pad(date.getMinutes())}`;
   } else {
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} at ${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 }
 
-const MessageItem = observer(({ message }: { message: Message }) => {
-  return (
-    <div className={styles.messageItem}>
+const MessageItem = observer(({ message, beforeMessage }: { message: Message, beforeMessage: Message }) => {
+
+  const Details = () => (
+    <div className={styles.details}>
       <Avatar hexColor={message.createdBy.hexColor} size={30} />
       <div className={styles.username}>{message.createdBy.username}</div>
       <div className={styles.date}>{formatTimestamp(message.createdAt)}</div>
-      <div className={styles.content}>{message.content}</div>
+    </div>
+  )
+  const TimeStampCompact = () => (
+    <div className={styles.compactDate}>{formatTimestamp(message.createdAt)}</div>
+  )
+
+  const isSameCreator = beforeMessage?.createdBy?._id === message?.createdBy?._id;
+  const isDateUnderFiveMinutes = (message?.createdAt - beforeMessage?.createdAt) < 300000;
+
+
+  const isCompact = isSameCreator && isDateUnderFiveMinutes;
+
+  return (
+    <div className={`${styles.messageItem} ${isCompact ? styles.compact : '' }`}>
+      {isCompact ? null : <Details />}
+      <div className={styles.messageContainer}>
+        <div className={styles.content}>{message.content}</div>
+        {isCompact ? <TimeStampCompact /> : null}
+      </div>
     </div>
   );
 });
@@ -78,16 +102,38 @@ const MessageLogArea = observer(() => {
     return () => disposeAutorun();
   }, [channelId])
 
+  const messages = store.messageStore.channelMessages[channelId!];
+
   return <div className={styles.messageLogArea}>
-    {store.messageStore.channelMessages[channelId!]?.map(message => (<MessageItem key={message._id} message={message} />))}
+    {messages?.map((message, i) => (<MessageItem key={message._id} message={message} beforeMessage={messages[i - 1]} />))}
   </div>
 })
 
 
 
 function MessageArea() {
+  const { serverId, channelId } = useParams();
+
+  const [message, setMessage] = useState('');
+
+  const onKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const trimmedMessage = message.trim();
+      setMessage('')
+      if (!trimmedMessage) return;
+      const channel = client.channels.cache[channelId!];
+      store.messageStore.sendMessage(channel, trimmedMessage);
+    }
+  }
+  
+  const onChange = (event: any) => {
+    setMessage(event.target?.value);
+  }
+
+
   return <div className={styles.messageArea}>
-    <textarea placeholder='Message' className={styles.textArea}></textarea>
+    <textarea placeholder='Message' className={styles.textArea} onKeyDown={onKeyDown} onChange={onChange} value={message}></textarea>
     <CustomButton iconName='send' className={styles.button}/>
   </div>
 }
