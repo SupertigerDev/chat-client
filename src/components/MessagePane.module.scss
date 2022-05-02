@@ -2,12 +2,15 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
 
 .messageLogArea {
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow: auto;
+  height: 100%;
 }
 
 .messageArea {
@@ -43,10 +46,19 @@
 .messageItem {
   display: flex;
   flex-direction: column;
+  position: relative;
   flex-shrink: 0;
   transition: background-color 0.2s;
   padding-left: 10px;
   padding-right: 10px;
+  overflow: hidden;
+
+  .messageItemContainer {
+    display: flex;
+    flex-direction: column;
+
+  }
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
     .messageContainer .compactDate {
@@ -55,12 +67,22 @@
   }
   .details {
     display: flex;
+    position: relative;
     align-items: center;
     margin-top: 3px;
-    margin-bottom: 2px;
+    &:after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 33px;
+      bottom: -18px;
+      width: 1px;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
     .username {
       margin-left: 5px;
       font-size: 14px;
+      font-weight: bold;
     }
     .date {
       color: rgba(255, 255, 255, 0.6);
@@ -74,9 +96,11 @@
     .content {
       margin: 3px;
       margin-bottom: 2px;
-      margin-top: 2px;
+      margin-top: 0;
+      margin-left: 35px;
       color: rgba(255, 255, 255, 0.8);
       font-size: 14px;
+      word-break: break-word;
     }
     .compactDate {
       position: absolute;
@@ -92,8 +116,35 @@
     }
 
   }
-  &.compact .content {
-    margin: 2px;
-    margin-left: 3px;
+  &.compact {
+    &:after {
+      content: "";
+      position: absolute;
+      left: 25px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .content {
+      margin: 2px;
+        margin-left: 35px;
+    }
+  }
+  &[data-animate] .messageItemContainer {
+    transform: translateY(100%);
+    animation-name: goUp;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+}
+
+
+@keyframes goUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

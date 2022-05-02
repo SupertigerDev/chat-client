@@ -1,7 +1,7 @@
 import { Message } from 'chat-api/build/common/Message';
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useParams } from 'react-router-dom';
 import { client } from '../common/client';
 import { store } from '../store/Store';
@@ -55,31 +55,33 @@ function formatTimestamp(timestamp: number) {
   }
 }
 
-const MessageItem = observer(({ message, beforeMessage }: { message: Message, beforeMessage: Message }) => {
+const MessageItem = observer((props: { message: Message, beforeMessage: Message, animate: boolean }) => {
 
   const Details = () => (
     <div className={styles.details}>
-      <Avatar hexColor={message.createdBy.hexColor} size={30} />
-      <div className={styles.username}>{message.createdBy.username}</div>
-      <div className={styles.date}>{formatTimestamp(message.createdAt)}</div>
+      <Avatar hexColor={props.message.createdBy.hexColor} size={30} />
+      <div className={styles.username}>{props.message.createdBy.username}</div>
+      <div className={styles.date}>{formatTimestamp(props.message.createdAt)}</div>
     </div>
   )
   const TimeStampCompact = () => (
-    <div className={styles.compactDate}>{formatTimestamp(message.createdAt)}</div>
+    <div className={styles.compactDate}>{formatTimestamp(props.message.createdAt)}</div>
   )
 
-  const isSameCreator = beforeMessage?.createdBy?._id === message?.createdBy?._id;
-  const isDateUnderFiveMinutes = (message?.createdAt - beforeMessage?.createdAt) < 300000;
+  const isSameCreator = props.beforeMessage?.createdBy?._id === props.message?.createdBy?._id;
+  const isDateUnderFiveMinutes = (props.message?.createdAt - props.beforeMessage?.createdAt) < 300000;
 
 
   const isCompact = isSameCreator && isDateUnderFiveMinutes;
 
   return (
-    <div className={`${styles.messageItem} ${isCompact ? styles.compact : '' }`}>
-      {isCompact ? null : <Details />}
-      <div className={styles.messageContainer}>
-        <div className={styles.content}>{message.content}</div>
-        {isCompact ? <TimeStampCompact /> : null}
+    <div className={`${styles.messageItem} ${isCompact ? styles.compact : '' }`} data-animate={props.animate}>
+      <div className={styles.messageItemContainer}>
+        {isCompact ? null : <Details />}
+        <div className={styles.messageContainer}>
+          <div className={styles.content}>{props.message.content}</div>
+          {isCompact ? <TimeStampCompact /> : null}
+        </div>
       </div>
     </div>
   );
@@ -91,21 +93,46 @@ const MessageItem = observer(({ message, beforeMessage }: { message: Message, be
 
 const MessageLogArea = observer(() => {
   const {channelId} = useParams();
+  const messageLogElement = useRef<HTMLDivElement>(null);
+  const messages = store.messageStore.channelMessages[channelId!];
+  const [lastMessageTimestamp, setLastMessageTimestamp] = useState<null | number>(null);
 
   useEffect(() => {
-    const disposeAutorun = autorun(() => {
+    setLastMessageTimestamp(null);
+    const disposeAutorun = autorun(async () => {
       const channel = client.channels.cache[channelId!];
       if (!channel) return;
-      store.messageStore.loadChannelMessages(channel);
+      await store.messageStore.loadChannelMessages(channel);
     })
-
     return () => disposeAutorun();
   }, [channelId])
+  
+  
+  useLayoutEffect(() => {
+    
+    if (messageLogElement.current) {
+      messageLogElement.current.scrollTop = messageLogElement.current.scrollHeight;
+    }
+    if (messages) {
+      let timestamp = messages[messages.length - 1]?.createdAt - 10;
+      if (!lastMessageTimestamp) {
+        timestamp = Date.now();
+        console.log("test")
+      }
+      setLastMessageTimestamp(timestamp);
+    }
+  }, [messages?.length])
+  
 
-  const messages = store.messageStore.channelMessages[channelId!];
-
-  return <div className={styles.messageLogArea}>
-    {messages?.map((message, i) => (<MessageItem key={message._id} message={message} beforeMessage={messages[i - 1]} />))}
+  return <div className={styles.messageLogArea} ref={messageLogElement} >
+    {messages?.map((message, i) => (
+      <MessageItem 
+        key={message.tempId || message._id}
+        animate={lastMessageTimestamp && message.createdAt > lastMessageTimestamp}
+        message={message}
+        beforeMessage={messages[i - 1]}
+      />)
+    )}
   </div>
 })
 
