@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import CustomInput from '../components/CustomInput';
+import CustomInput from '../components/CustomInput/CustomInput';
 import { loginRequest } from '../services/UserService';
 import styles from './LoginPage.module.scss';
 import {useEffect, useState} from 'preact/hooks';

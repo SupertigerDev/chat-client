@@ -1,13 +1,13 @@
 import { Server } from 'chat-api/build/store/Servers';
 import { observer } from 'mobx-react-lite';
-import { client } from '../common/client';
+import { client } from '../../common/client';
 import styles from './SidePane.module.scss';
 import { Link, useParams } from "react-router-dom";
-import { Icon } from './Icon';
-import Avatar from './Avatar';
-import Modal from './Modal';
+import { Icon } from '../Icon';
+import Avatar from '../Avatar/Avatar';
+import Modal from '../Modal/Modal';
 import { useState } from 'preact/hooks';
-import { AddServer } from './AddServer';
+import { AddServer } from '../AddServer/AddServer';
 
 
 export default function SidePane () {

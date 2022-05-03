@@ -3,11 +3,11 @@ import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'preact/hooks';
 import { useNavigate } from 'react-router-dom';
-import { client } from '../common/client';
-import { store } from '../store/Store';
-import { Tab } from '../store/TabStore';
-import Avatar from './Avatar';
-import { Icon } from './Icon';
+import { client } from '../../common/client';
+import { store } from '../../store/Store';
+import { Tab } from '../../store/TabStore';
+import Avatar from '../Avatar/Avatar';
+import { Icon } from '../Icon';
 import styles from './Tabs.module.scss';
 
 export const TabList = observer(() => {

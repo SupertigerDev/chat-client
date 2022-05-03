@@ -1,30 +1,27 @@
-import { Message } from "chat-api/build/common/Message";
+import { Message, MessageType } from "chat-api/build/common/Message";
 import { ServerChannel } from "chat-api/build/store/Channels";
 import { makeAutoObservable, runInAction } from "mobx";
 import { client } from "../common/client";
 
 
-export interface LocalMessage {
-  _id: string;
-  tempId: string;
-  channelId: string;
-  content: string;
-  createdBy: {
-    _id: string;
-    username: string;
-    tag: string;
-    hexColor: string;
-  };
-  createdAt: number;
+export enum MessageSentStatus {
+    SENDING = 0,
+    FAILED = 1,
+}
+
+export class LocalMessage extends Message {
+  tempId?: string;
+  sentStatus?: MessageSentStatus;
+  constructor(messageRaw: any) {
+    super(messageRaw);
+    makeAutoObservable(this);
+  }
 }
 
 
-
-const type = Message
-
 export class MessageStore {
 
-  channelMessages: Record<string, (Message | LocalMessage)[]> = {}
+  channelMessages: Record<string, LocalMessage[]> = {}
 
   constructor() {
     makeAutoObservable(this);
@@ -51,9 +48,11 @@ export class MessageStore {
     const localMessage: LocalMessage = {
       _id: "",
       tempId: tempMessageId,
-      channelId: channel._id,
+      channel: channel._id,
       content,
       createdAt: Date.now(),
+      sentStatus: MessageSentStatus.SENDING,
+      type: MessageType.CONTENT,
       createdBy: {
         _id: user._id,
         username: user.username,
@@ -63,10 +62,16 @@ export class MessageStore {
     }
     this.pushMessage(channel._id, localMessage);
 
-    const message = await channel.sendMessage(content);
-    message.tempId = tempMessageId;
+    const message: void | LocalMessage = await channel.sendMessage(content).catch(() => {
+      console.log("failed to send message");
+    });
     runInAction(() => {
       const index = this.channelMessages[channel._id].findIndex(m => m.tempId === tempMessageId);
+      if (!message) {
+        this.channelMessages[channel._id][index].sentStatus = MessageSentStatus.FAILED;
+        return;
+      }
+      message.tempId = tempMessageId;
       this.channelMessages[channel._id][index] = message;
     })
   }

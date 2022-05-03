@@ -1,10 +1,10 @@
 import { useEffect } from 'preact/hooks';
 import styles from './AppPage.module.scss';
 import { client } from '../common/client';
-import SidePane from '../components/SidePane';
-import Tabs from '../components/Tabs';
-import ServerDrawer from '../components/ServerDrawer';
-import MessagePane from '../components/MessagePane';
+import SidePane from '../components/SidePane/SidePane';
+import Tabs from '../components/Tabs/Tabs';
+import ServerDrawer from '../components/ServerDrawer/ServerDrawer';
+import MessagePane from '../components/MessagePane/MessagePane';
 
 const DRAWER_WIDTH = 240;
 

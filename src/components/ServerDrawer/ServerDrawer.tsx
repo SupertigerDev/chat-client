@@ -4,8 +4,8 @@ import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'preact/hooks';
 import { Link, useParams } from 'react-router-dom';
-import { client } from '../common/client';
-import { Icon } from './Icon';
+import { client } from '../../common/client';
+import { Icon } from '../Icon';
 import styles from './ServerDrawer.module.scss';
 
 const ServerDrawer = observer(() => {
