@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { client } from '../../common/client';
 import styles from './SidePane.module.scss';
 import { Link, useParams } from "react-router-dom";
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 import Avatar from '../Avatar/Avatar';
 import Modal from '../Modal/Modal';
 import { useState } from 'preact/hooks';

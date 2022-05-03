@@ -1,3 +1,4 @@
+import { Client } from "chat-api";
 import { Message, MessageType } from "chat-api/build/common/Message";
 import { ServerChannel } from "chat-api/build/store/Channels";
 import { makeAutoObservable, runInAction } from "mobx";
@@ -12,8 +13,8 @@ export enum MessageSentStatus {
 export class LocalMessage extends Message {
   tempId?: string;
   sentStatus?: MessageSentStatus;
-  constructor(messageRaw: any) {
-    super(messageRaw);
+  constructor(client: Client, messageRaw: any) {
+    super(client, messageRaw);
     makeAutoObservable(this);
   }
 }
@@ -30,6 +31,13 @@ export class MessageStore {
     const messages = this.channelMessages[channelId];
     if (!messages) return;
     messages.push(message);
+  }
+  deleteMessage(channelId: string, messageId: string) {
+    const messages = this.channelMessages[channelId];
+    if (!messages) return;
+    const index = messages.findIndex(m => m._id === messageId);
+    if (index === -1) return;
+    messages.splice(index, 1);
   }
   async loadChannelMessages(channel: ServerChannel, force = false) {
     if (!force && this.channelMessages[channel._id]) return;
@@ -59,7 +67,7 @@ export class MessageStore {
         tag: user.tag,
         hexColor: user.hexColor,
       },
-    }
+    } as any;
     this.pushMessage(channel._id, localMessage);
 
     const message: void | LocalMessage = await channel.sendMessage(content).catch(() => {

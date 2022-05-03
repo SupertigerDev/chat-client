@@ -7,7 +7,7 @@ import { client } from '../../common/client';
 import { store } from '../../store/Store';
 import { Tab } from '../../store/TabStore';
 import Avatar from '../Avatar/Avatar';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 import styles from './Tabs.module.scss';
 
 export const TabList = observer(() => {

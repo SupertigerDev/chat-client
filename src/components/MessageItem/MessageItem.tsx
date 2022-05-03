@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { LocalMessage, MessageSentStatus } from '../../store/MessageStore';
 import Avatar from '../Avatar/Avatar';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 import styles from './MessageItem.module.scss';
 
 // make a function where if the number is less than 10, it will add a 0 in front of it
@@ -24,10 +24,17 @@ function formatTimestamp(timestamp: number) {
 }
 
 
-function FloatOptions() {
+function FloatOptions(props: { message: LocalMessage, isCompact: boolean }) {
+
+  const onDeleteClick = () => {
+    props.message.delete();
+  }
+  
   return (
     <div className={styles.floatOptions}>
-      test
+      {props.isCompact && (<div className={styles.floatDate}>{formatTimestamp(props.message.createdAt)}</div>)}
+      <div className={styles.item}><Icon name='edit' className={styles.icon} /></div>
+      <div className={styles.item} onClick={onDeleteClick}><Icon name='delete' className={styles.icon} color='var(--alert-color)' /></div>
     </div>
   )
 }
@@ -43,9 +50,6 @@ const MessageItem = observer((props: { message: LocalMessage, beforeMessage: Loc
       <div className={styles.date}>{formatTimestamp(props.message.createdAt)}</div>
     </div>
   )
-  const TimeStampCompact = () => (
-    <div className={styles.compactDate}>{formatTimestamp(props.message.createdAt)}</div>
-  )
 
   const isSameCreator = props.beforeMessage?.createdBy?._id === props.message?.createdBy?._id;
   const isDateUnderFiveMinutes = (props.message?.createdAt - props.beforeMessage?.createdAt) < 300000;
@@ -55,7 +59,7 @@ const MessageItem = observer((props: { message: LocalMessage, beforeMessage: Loc
 
   return (
     <div className={`${styles.messageItem} ${isCompact ? styles.compact : '' }`} data-animate={props.animate}>
-      <FloatOptions />
+      <FloatOptions isCompact={isCompact} message={props.message} />
       <div className={styles.messageItemOuterContainer}>
         <div className={styles.messageItemContainer}>
           {isCompact ? null : <Details />}
@@ -63,7 +67,6 @@ const MessageItem = observer((props: { message: LocalMessage, beforeMessage: Loc
             {props.message.sentStatus === MessageSentStatus.FAILED && <Icon name='error_outline' size={14} color="var(--alert-color)" className={styles.messageStatus} />}
             {props.message.sentStatus === MessageSentStatus.SENDING && <Icon name='query_builder' size={14} color="rgba(255,255,255,0.4)" className={styles.messageStatus} />}
             <div className={styles.content}>{props.message.content}</div>
-            {isCompact ? <TimeStampCompact /> : null}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import styles from './CustomButton.module.scss';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 
 export default function CustomButton(props: {className?: string, label?: string, iconName?: string, onClick?: () => void}) {
   return (

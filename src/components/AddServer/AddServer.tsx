@@ -1,5 +1,5 @@
 import styles from './AddServer.module.scss';
-import { Icon } from "../Icon";
+import { Icon } from "../Icon/Icon";
 
 import CustomInput from '../CustomInput/CustomInput';
 import CustomButton from '../CustomButton/CustomButton';
