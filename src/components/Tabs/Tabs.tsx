@@ -1,5 +1,4 @@
 import { Server } from 'chat-api/build/store/Servers';
-import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'preact/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -49,7 +48,7 @@ const TabItem = observer((props: {tab: Tab}) => {
   const selected = store.tabStore.selectedTabPath === props.tab.path
 
   return (
-    <div className={styles.tab} selected={selected} onDblClick={onDoubleClick} onClick={onClick}>
+    <div className={styles.tab + ` ${props.tab.opened && styles.opened}`} selected={selected} onDblClick={onDoubleClick} onClick={onClick}>
       {/* <Icon name={props.icon} size={20} className={styles.icon} /> */}
       {server && <Avatar size={20} hexColor={server.hexColor} />}
       <div className={styles.details}>

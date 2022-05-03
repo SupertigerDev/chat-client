@@ -43,40 +43,34 @@ const MessageLogArea = observer(() => {
   const {channelId} = useParams();
   const messageLogElement = useRef<HTMLDivElement>(null);
   const messages = store.messageStore.channelMessages[channelId!];
-  const [lastMessageTimestamp, setLastMessageTimestamp] = useState<null | number>(null);
+  const [openedTimestamp, setOpenedTimestamp] = useState<null | number>(null);
 
   useEffect(() => {
-    setLastMessageTimestamp(null);
+    setOpenedTimestamp(null);
     const disposeAutorun = autorun(async () => {
       const channel = client.channels.cache[channelId!];
       if (!channel) return;
       await store.messageStore.loadChannelMessages(channel);
+      setOpenedTimestamp(Date.now());
     })
     return () => disposeAutorun();
   }, [channelId])
   
   
   useLayoutEffect(() => {
-    
     if (messageLogElement.current) {
       messageLogElement.current.scrollTop = 99999;
     }
-
-    if (messages) {
-      let timestamp = messages[messages.length - 1]?.createdAt - 10;
-      if (!lastMessageTimestamp) {
-        timestamp = Date.now();
-      }
-      setLastMessageTimestamp(timestamp);
-    }
   }, [messages, messages?.length])
+  
+
   
 
   return <div className={styles.messageLogArea} ref={messageLogElement} >
     {messages?.map((message, i) => (
       <MessageItem
         key={message.tempId || message._id}
-        animate={lastMessageTimestamp && message.createdAt > lastMessageTimestamp}
+        animate={openedTimestamp && message.createdAt > openedTimestamp}
         message={message}
         beforeMessage={messages[i - 1]}
       />)
@@ -90,6 +84,7 @@ function MessageArea() {
   const { serverId, channelId } = useParams();
 
   const [message, setMessage] = useState('');
+  const tabStore = store.tabStore;
 
   const onKeyDown = (event: any) => {
     if (event.key === "Enter") {
@@ -98,6 +93,7 @@ function MessageArea() {
       setMessage('')
       if (!trimmedMessage) return;
       const channel = client.channels.cache[channelId!];
+      tabStore.updateTab(tabStore.selectedTabPath!, {opened: true})
       store.messageStore.sendMessage(channel, trimmedMessage);
     }
   }
