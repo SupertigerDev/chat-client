@@ -1,7 +1,7 @@
 import { Server } from 'chat-api/build/store/Servers';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'preact/hooks';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 import { client } from '../../common/client';
 import { store } from '../../store/Store';
 import { Tab } from '../../store/TabStore';
@@ -10,18 +10,10 @@ import { Icon } from '../Icon/Icon';
 import styles from './Tabs.module.scss';
 
 export const TabList = observer(() => {
-  const {tabs, selectedTabPath} = store.tabStore;
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!selectedTabPath) return;
-    navigate("/app" + selectedTabPath);
-  }, [selectedTabPath])
-
+  const {tabs} = store.tabStore;
   return (
     <div className={styles.tabs}>
       {tabs.map(tab => <TabItem tab={tab} />)}
-      
     </div>
   )
 })
@@ -30,8 +22,10 @@ export default TabList;
 
 const TabItem = observer((props: {tab: Tab}) => {
   const [server, setServer] = useState<Server | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
+    setServer(null);
       const server = client.servers.cache[props.tab.serverId!];
       if (!server) return;
       setServer(server);
@@ -41,21 +35,25 @@ const TabItem = observer((props: {tab: Tab}) => {
     store.tabStore.updateTab(props.tab.path, {opened: true})
   }
 
-  const onClick = () => {
-    store.tabStore.selectTab(props.tab.path);
+
+  const selected = location.pathname === props.tab.path
+  let subName = null;
+  if (server) {
+    subName = server.name;
   }
-
-  const selected = store.tabStore.selectedTabPath === props.tab.path
-
+  if (props.tab.subName) {
+    subName = props.tab.subName;
+  }
+  
   return (
-    <div className={styles.tab + ` ${props.tab.opened && styles.opened}`} selected={selected} onDblClick={onDoubleClick} onClick={onClick}>
-      {/* <Icon name={props.icon} size={20} className={styles.icon} /> */}
+    <Link to={props.tab.path} className={styles.tab + ` ${props.tab.opened && styles.opened}`} selected={selected} onDblClick={onDoubleClick}>
+      {props.tab.iconName && <Icon name={props.tab.iconName} size={20} className={styles.icon} />}
       {server && <Avatar size={20} hexColor={server.hexColor} />}
       <div className={styles.details}>
         <div className={styles.title}>{props.tab.title}</div>
-        {server && <div className={styles.subTitle}>{server.name}</div>}
+        {subName && <div className={styles.subTitle}>{subName}</div>}
       </div>
       <Icon name="close" size={14} className={styles.closeIcon} />
-    </div>
+    </Link>
   )
 })

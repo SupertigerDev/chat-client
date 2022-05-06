@@ -4,6 +4,7 @@ import styles from './CustomInput.module.scss';
 interface Props {
   label: string, 
   type?: string, 
+  value?: string,
   onText?: (value: string) => void, 
   error?: Error
 }
@@ -25,7 +26,7 @@ export default function Input(props: Props) {
   return (
     <div className={styles.inputContainer}>
       <div className={styles.label}>{props.label}</div>
-        <input onChange={onChange} className={styles.input} type={props.type || "text"} />
+        <input onChange={onChange} className={styles.input} type={props.type || "text"} value={props.value || ""} />
         {typeof props.error === 'string' && <div className={styles.errorMessage}>{props.error}</div>}
         {error && <div className={styles.errorMessage}>{error}</div>}
     </div>

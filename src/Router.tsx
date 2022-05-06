@@ -10,6 +10,11 @@ export default function Router() {
 
       <Route path="app/servers/:serverId/:channelId" element={<AppPage routeName="server_messages" />} />
 
+
+      <Route path="app/explore/servers/invites/:inviteId" element={<AppPage routeName="explore_server" />} />
+
+
+
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<Register />} />
       <Route path="*" element={<NoMatch />} />

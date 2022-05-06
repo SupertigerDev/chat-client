@@ -5,6 +5,7 @@ import SidePane from '../components/SidePane/SidePane';
 import Tabs from '../components/Tabs/Tabs';
 import ServerDrawer from '../components/ServerDrawer/ServerDrawer';
 import MessagePane from '../components/MessagePane/MessagePane';
+import ExploreServerPane from '../components/ExploreServerPane/ExploreServerPane';
 
 const DRAWER_WIDTH = 240;
 
@@ -30,6 +31,7 @@ function MainPane (props: {routeName?: string}) {
   return <div className={styles.mainPane}>
     <Tabs />
     {props.routeName === 'server_messages' && <MessagePane />}
+    {props.routeName === 'explore_server' && <ExploreServerPane />}
   </div>
 }
 

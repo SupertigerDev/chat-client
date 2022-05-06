@@ -1,9 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import { NavigateFunction } from "react-router-dom";
 
 export interface Tab {
   title: string;
   iconName?: string;
   path: string;
+  subName?: string;
   userId?: string;
   serverId?: string;
   opened: boolean;
@@ -12,18 +14,21 @@ export interface Tab {
 export class TabStore {
   
   tabs: Tab[];
-  selectedTabPath: string | undefined;
+  lastPath?: string;
 
   constructor() {
     makeAutoObservable(this);
     this.tabs = [];
   }
   
-  openTab(tab: Omit<Tab, 'opened'>) {
+  isTabOpened(path: string) {
+    return this.tabs.find(tab => tab.path === path);
+  }
+  openTab(tab: Omit<Tab, 'opened'>, navigate: NavigateFunction, select = true) {
     runInAction(() => {
-      const tabAlreadyOpened = this.tabs.find(_tab => _tab.path === tab.path);
+      const tabAlreadyOpened = this.isTabOpened(tab.path);
       if (tabAlreadyOpened) {
-        this.selectTab(tab.path);
+        select && this.selectTab(tab.path, navigate);
         return;
       };
   
@@ -34,7 +39,7 @@ export class TabStore {
         this.tabs.push({...tab, opened: false});
       }
   
-      this.selectTab(tab.path);
+      select && this.selectTab(tab.path, navigate);
     })
   }
   updateTab(path: string, tab: Partial<Tab>) {
@@ -44,11 +49,19 @@ export class TabStore {
     }
   }
 
-  selectTab(path: string) {
+  selectTab(path: string, navigate: NavigateFunction) {
     runInAction(() => {
       const tab = this.tabs.find(tab => tab.path === path);
       if (!tab) return;
-      this.selectedTabPath = tab.path;
+
+      if (!this.lastPath) {
+        this.lastPath = tab.path;
+        return;
+      }
+
+      if (this.lastPath === tab.path) return 
+      this.lastPath = tab.path;
+      navigate(tab.path);
     });
   }
   

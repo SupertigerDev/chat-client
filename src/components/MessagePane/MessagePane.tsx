@@ -1,7 +1,7 @@
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { client } from '../../common/client';
 import { store } from '../../store/Store';
 import CustomButton from '../CustomButton/CustomButton';
@@ -10,6 +10,7 @@ import styles from './MessagePane.module.scss';
 
 export default function MessagePane() {
   const { serverId, channelId } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
 
     const disposeAutorun = autorun(() => {
@@ -19,8 +20,8 @@ export default function MessagePane() {
       store.tabStore.openTab({
         title: channel.name,
         serverId: serverId!,
-        path: `/servers/${serverId}/${channelId}`,
-      });
+        path: `/app/servers/${serverId}/${channelId}`,
+      }, navigate, false);
     })
 
     return () => disposeAutorun();
@@ -82,6 +83,7 @@ const MessageLogArea = observer(() => {
 
 function MessageArea() {
   const { serverId, channelId } = useParams();
+  const location = useLocation();
 
   const [message, setMessage] = useState('');
   const tabStore = store.tabStore;
@@ -93,7 +95,7 @@ function MessageArea() {
       setMessage('')
       if (!trimmedMessage) return;
       const channel = client.channels.cache[channelId!];
-      tabStore.updateTab(tabStore.selectedTabPath!, {opened: true})
+      tabStore.updateTab(location.pathname!, {opened: true})
       store.messageStore.sendMessage(channel, trimmedMessage);
     }
   }
