@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import CustomInput from '../../components/CustomInput/CustomInput';
-import { loginRequest, registerRequest } from '../../services/UserService';
+import { registerRequest } from '../../services/UserService';
 import styles from './RegisterPage.module.scss';
 import {useEffect, useState} from 'preact/hooks';
 import CustomButton from '../../components/CustomButton/CustomButton';
@@ -40,7 +40,7 @@ export default function RegisterPage() {
     navigate('/app')
   }
 
-  return <div className={styles.loginPage}>
+  return <div className={styles.registerPage}>
     <div className={styles.container}>
       <div className={styles.title}>Welcome to Nertivia!</div>
       <CustomInput label='Email' type='email' error={error} onText={setEmail} />
