@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
-import CustomInput from '../components/CustomInput/CustomInput';
-import { loginRequest } from '../services/UserService';
+import CustomInput from '../../components/CustomInput/CustomInput';
+import { loginRequest } from '../../services/UserService';
 import styles from './LoginPage.module.scss';
 import {useEffect, useState} from 'preact/hooks';
+import CustomButton from '../../components/CustomButton/CustomButton';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function LoginPage() {
     if (requestSent) return;
     setRequestSent(true);
     setError({message: '', path: ''});
-    const response = await loginRequest(email, password).catch(err => {
+    const response = await loginRequest(email.trim(), password.trim()).catch(err => {
       setError({message: err.message, path: err.path});
     })
     setRequestSent(false);
@@ -35,12 +36,9 @@ export default function LoginPage() {
       <div className={styles.title}>Login to continue</div>
       <CustomInput label='Email' type='email' error={error} onText={setEmail} />
       <CustomInput label='Password' type='password' error={error} onText={setPassword} />
-      <Button label={requestSent ? 'Logging in...' : 'Login'} onClick={loginClicked} />
+      <CustomButton iconName='login' label={requestSent ? 'Logging in...' : 'Login'} onClick={loginClicked} />
       <Link className={styles.link} to="/register">Create an account instead</Link>
     </div>
   </div>
 }
 
-function Button(props: {label: string, onClick?: () => void}) {
-  return <button className={styles.button} onClick={props.onClick}>{props.label}</button>
-}

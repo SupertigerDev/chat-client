@@ -15,3 +15,14 @@ export async function loginRequest(email: string, password: string): Promise<{to
     }
   });
 }
+export async function registerRequest(email: string, username: string, password: string): Promise<{token: string}> {
+  return request({
+    url: "http://localhost:80/api" + Endpoints.registerEndpoint(),
+    method: "POST",
+    body: {
+      email,
+      username,
+      password
+    }
+  });
+}

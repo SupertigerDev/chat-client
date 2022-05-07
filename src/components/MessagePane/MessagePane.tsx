@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { client } from '../../common/client';
+import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
 import { store } from '../../store/Store';
 import CustomButton from '../CustomButton/CustomButton';
 import MessageItem from '../MessageItem/MessageItem';
@@ -20,7 +21,7 @@ export default function MessagePane() {
       store.tabStore.openTab({
         title: channel.name,
         serverId: serverId!,
-        path: `/app/servers/${serverId}/${channelId}`,
+        path: SERVER_MESSAGES(serverId!, channelId!),
       }, navigate, false);
     })
 

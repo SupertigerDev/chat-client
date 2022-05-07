@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
-import AppPage from "./pages/AppPage";
-import LoginPage from "./pages/LoginPage";
+import AppPage from "./pages/AppPage/AppPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 
 export default function Router() {
   return (
@@ -16,7 +17,7 @@ export default function Router() {
 
 
       <Route path="login" element={<LoginPage />} />
-      <Route path="register" element={<Register />} />
+      <Route path="register" element={<RegisterPage />} />
       <Route path="*" element={<NoMatch />} />
     </Routes>
   );
@@ -32,14 +33,6 @@ function Home() {
 }
 
 
-
-function Register() {
-  return (
-    <div>
-      <h2>Register</h2>
-    </div>
-  );
-}
 
 function NoMatch() {
   return (

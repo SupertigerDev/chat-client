@@ -1,7 +1,8 @@
 :root {
   --background-color: hsl(0, 0%, 15%);
-  --primary-color: #3c87ff;
-  --alert-color: #ff3d3d;
+  --primary-color: #77a8f3;
+  --alert-color:   #eb6e6e;
+  --success-color: #78e380;
 }
 
 html,

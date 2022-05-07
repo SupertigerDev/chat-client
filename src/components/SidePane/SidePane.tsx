@@ -8,6 +8,7 @@ import Avatar from '../Avatar/Avatar';
 import Modal from '../Modal/Modal';
 import { useState } from 'preact/hooks';
 import { AddServer } from '../AddServer/AddServer';
+import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
 
 
 export default function SidePane () {
@@ -31,7 +32,7 @@ const  ServerList = observer(() => {
 
 function ServerItem(props: {server: Server, selected?: boolean}) {
   const { _id, defaultChannel } = props.server;
-  return <Link to={`/app/servers/${_id}/${defaultChannel}`} className={styles.item} selected={props.selected} >
+  return <Link to={SERVER_MESSAGES(_id, defaultChannel)} className={styles.item} selected={props.selected} >
     <Avatar size={35} hexColor={props.server.hexColor} />
   </Link>
 }

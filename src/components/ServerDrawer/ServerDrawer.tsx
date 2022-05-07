@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect } from 'preact/hooks';
 import { Link, useParams } from 'react-router-dom';
 import { client } from '../../common/client';
+import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
 import { Icon } from '../Icon/Icon';
 import styles from './ServerDrawer.module.scss';
 
@@ -43,7 +44,7 @@ function Channel(props: {channel: ServerChannel, selected: boolean}) {
   const { channel } = props;
 
   return (
-    <Link to={`/app/servers/${channel.server}/${channel._id}`} className={styles.channel} selected={props.selected}>
+    <Link to={SERVER_MESSAGES(channel._id, channel._id)} className={styles.channel} selected={props.selected}>
       <div className={styles.channelName}>{channel.name}</div>
     </Link>
   )
