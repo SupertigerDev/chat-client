@@ -3,6 +3,15 @@ import Endpoints from "./Endpoints";
 import {RawServer} from 'chat-api/build/types/RawData'
 
 
+export async function createServer(serverName: string): Promise<RawServer> {
+  return request<RawServer>({
+    method: "POST",
+    url: "http://localhost:80/api" + Endpoints.serversEndpoint(),
+    useToken: true,
+    body: {name: serverName}
+  });
+}
+
 export async function createInvite(serverId: string): Promise<any> {
   return request({
     method: "POST",

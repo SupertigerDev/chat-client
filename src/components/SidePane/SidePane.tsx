@@ -19,8 +19,45 @@ export default function SidePane () {
       <ServerList />
       <Item iconName='add_box' onClick={() => setShowAddServerModel(true)}  />
     </div>
+    <SettingsItem />
+    <UserItem />
   </div>
 }
+
+
+
+
+
+function SettingsItem() {
+  const user = client.account.user;
+  if (!user) return <></>;
+  return <div className={`${styles.item} ${styles.settingsIcon}`} >
+    <Icon name='settings' />
+  </div>
+}
+
+function UserItem() {
+  const user = client.account.user;
+  if (!user) return <></>;
+  return <div className={`${styles.item} ${styles.user}`} >
+    <Avatar size={35} hexColor={user?.hexColor} />
+  </div>
+}
+
+
+function ServerItem(props: {server: Server, selected?: boolean}) {
+  const { _id, defaultChannel } = props.server;
+  return <Link to={SERVER_MESSAGES(_id, defaultChannel)} className={styles.item} selected={props.selected} >
+    <Avatar size={35} hexColor={props.server.hexColor} />
+  </Link>
+}
+
+function Item(props: {iconName: string, selected?: boolean, onClick?: () => void}) {
+  return <div className={styles.item} selected={props.selected} onClick={props.onClick} >
+    <Icon name={props.iconName} size={40} />
+  </div>
+}
+
 
 const  ServerList = observer(() => {
   const {serverId} = useParams();
@@ -30,14 +67,3 @@ const  ServerList = observer(() => {
 });
 
 
-function ServerItem(props: {server: Server, selected?: boolean}) {
-  const { _id, defaultChannel } = props.server;
-  return <Link to={SERVER_MESSAGES(_id, defaultChannel)} className={styles.item} selected={props.selected} >
-    <Avatar size={35} hexColor={props.server.hexColor} />
-  </Link>
-}
-function Item(props: {iconName: string, selected?: boolean, onClick?: () => void}) {
-  return <div className={styles.item} selected={props.selected} onClick={props.onClick} >
-    <Icon name={props.iconName} size={40} />
-  </div>
-}

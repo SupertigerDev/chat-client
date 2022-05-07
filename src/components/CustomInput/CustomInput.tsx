@@ -6,28 +6,32 @@ interface Props {
   type?: string, 
   value?: string,
   onText?: (value: string) => void, 
-  error?: Error
+  error?: Error | string
+  errorName?: string
 }
 
 interface Error {message: string, path: string};
 
 export default function Input(props: Props) {
-  const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (props.error?.path.toLowerCase() !== props.label.toLowerCase()) {
-      setError('');
-      return;
+
+  let error = "";
+  
+  if (props.error && typeof props.error !== 'string') {
+    let errorField = props.errorName || props.label
+    if (errorField.toLowerCase() === props.error.path){
+      error = props.error.message;
     }
-    setError(props.error.message);
-  }, [props.error])
+  }
+  if (typeof props.error === 'string') {
+    error = props.error;
+  }
 
   const onChange = (event: any) => props.onText?.(event.target.value);
   return (
     <div className={styles.inputContainer}>
       <div className={styles.label}>{props.label}</div>
         <input onChange={onChange} className={styles.input} type={props.type || "text"} value={props.value || undefined} />
-        {typeof props.error === 'string' && <div className={styles.errorMessage}>{props.error}</div>}
         {error && <div className={styles.errorMessage}>{error}</div>}
     </div>
 
