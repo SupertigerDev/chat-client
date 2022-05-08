@@ -29,20 +29,19 @@ export default function SidePane () {
 
 
 function SettingsItem() {
-  const user = client.account.user;
-  if (!user) return <></>;
   return <div className={`${styles.item} ${styles.settingsIcon}`} >
     <Icon name='settings' />
   </div>
 }
 
-function UserItem() {
+const UserItem = observer(() => {
   const user = client.account.user;
+
   if (!user) return <></>;
   return <div className={`${styles.item} ${styles.user}`} >
     <Avatar size={35} hexColor={user?.hexColor} />
   </div>
-}
+});
 
 
 function ServerItem(props: {server: Server, selected?: boolean}) {
