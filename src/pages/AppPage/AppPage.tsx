@@ -6,6 +6,10 @@ import Tabs from '../../components/Tabs/Tabs';
 import ServerDrawer from '../../components/ServerDrawer/ServerDrawer';
 import MessagePane from '../../components/MessagePane/MessagePane';
 import ExploreServerPane from '../../components/ExploreServerPane/ExploreServerPane';
+import { observer } from 'mobx-react-lite';
+import { useParams } from 'react-router-dom';
+import Avatar from '../../components/Avatar/Avatar';
+import ServerMembersDrawer from '../../components/ServerMembersDrawer/ServerMembersDrawer';
 
 const DRAWER_WIDTH = 240;
 
@@ -38,10 +42,11 @@ function MainPane (props: {routeName?: string}) {
 function LeftPane (props: {width: number, routeName?: string}) {
   return <div style={{width: `${props.width}px`}} className={styles.leftPane}>
     {props.routeName === 'server_messages' && <ServerDrawer />}
-
   </div>
 }
 
 function RightPane (props: {width: number}) {
-  return <div style={{width: `${props.width}px`}} className={styles.rightPane}>RightPane</div>
+  return <div style={{width: `${props.width}px`}} className={styles.rightPane}>
+    <ServerMembersDrawer />
+  </div>
 }
