@@ -4,18 +4,24 @@ import { useParams } from "react-router-dom";
 import { client } from "../../common/client";
 import Avatar from "../Avatar/Avatar";
 import { ServerMember } from 'chat-api/build/store/ServerMembers';
+import { userStatusDetail } from '../../common/userStatus';
+import UserPresence from '../UserPresence/UserPresence';
 
 
-function MemberItem (props: {member: ServerMember}) {
+const MemberItem = observer((props: {member: ServerMember}) => {
   const {member} = props;
+  const {user} = member;
+
   return (
     <div className={styles.memberItem}>
-      <Avatar size={25} hexColor={member.user.hexColor} />
-      <span className={styles.username}>{member.user.username}</span>
-      <span>{ member.user.presence.status }</span>
+      <Avatar size={25} hexColor={user.hexColor} />
+      <div className={styles.memberInfo}>
+        <div className={styles.username}>{user.username}</div>
+        <UserPresence user={user} />
+      </div>
     </div>
   )
-}
+});
 
 
 
