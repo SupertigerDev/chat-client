@@ -6,6 +6,7 @@
   width: 70px;
   flex-shrink: 0;
   padding-bottom: 2px;
+  padding-top: 2px;
 }
 
 .serverList {
@@ -22,7 +23,9 @@
   padding-top: 2px;
   padding-bottom: 2px;
   margin-bottom: 2px;
+  margin-top: 2px;
   align-items: center;
+  border-top: solid 1px rgba(255, 255, 255, 0.2);
   border-bottom: solid 1px rgba(255, 255, 255, 0.2);
 }
 

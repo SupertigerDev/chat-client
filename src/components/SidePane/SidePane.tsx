@@ -14,6 +14,7 @@ import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
 export default function SidePane () {
   const [showAddServerModel, setShowAddServerModel] = useState(false);
   return <div className={styles.sidePane}>
+    <InboxItem />
     <div className={styles.scrollable}>
       <Modal show={showAddServerModel} component={() => <AddServer />} />
       <ServerList />
@@ -28,6 +29,11 @@ export default function SidePane () {
 
 
 
+function InboxItem() {
+  return <div className={`${styles.item} ${styles.settingsIcon}`} >
+    <Icon name='all_inbox' />
+  </div>
+}
 function SettingsItem() {
   return <div className={`${styles.item} ${styles.settingsIcon}`} >
     <Icon name='settings' />
