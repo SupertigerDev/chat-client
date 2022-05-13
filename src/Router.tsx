@@ -9,6 +9,8 @@ export default function Router() {
       <Route index element={<Home />} />
       <Route path="app" element={<AppPage />} />
 
+      <Route path="app/inbox" element={<AppPage routeName="inbox" />} />
+
       <Route path="app/servers/:serverId/:channelId" element={<AppPage routeName="server_messages" />} />
 
 

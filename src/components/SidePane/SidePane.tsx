@@ -2,13 +2,13 @@ import { Server } from 'chat-api/build/store/Servers';
 import { observer } from 'mobx-react-lite';
 import { client } from '../../common/client';
 import styles from './SidePane.module.scss';
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Icon } from '../Icon/Icon';
 import Avatar from '../Avatar/Avatar';
 import Modal from '../Modal/Modal';
 import { useState } from 'preact/hooks';
 import { AddServer } from '../AddServer/AddServer';
-import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
+import { INBOX, SERVER_MESSAGES } from '../../common/RouterEndpoints';
 
 
 export default function SidePane () {
@@ -30,9 +30,12 @@ export default function SidePane () {
 
 
 function InboxItem() {
-  return <div className={`${styles.item} ${styles.settingsIcon}`} >
+  const location = useLocation();
+  const isSelected = location.pathname.startsWith(INBOX());
+
+  return <Link to={INBOX()} className={`${styles.item} ${styles.settingsIcon}`} selected={isSelected} >
     <Icon name='all_inbox' />
-  </div>
+  </Link>
 }
 function SettingsItem() {
   return <div className={`${styles.item} ${styles.settingsIcon}`} >
