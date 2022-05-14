@@ -4,12 +4,11 @@ import { client } from '../../common/client';
 import SidePane from '../../components/SidePane/SidePane';
 import Tabs from '../../components/Tabs/Tabs';
 import ServerDrawer from '../../components/ServerDrawer/ServerDrawer';
+import InboxDrawer from '../../components/InboxDrawer/InboxDrawer';
+
+import ServerMembersDrawer from '../../components/ServerMembersDrawer/ServerMembersDrawer';
 import MessagePane from '../../components/MessagePane/MessagePane';
 import ExploreServerPane from '../../components/ExploreServerPane/ExploreServerPane';
-import { observer } from 'mobx-react-lite';
-import { useParams } from 'react-router-dom';
-import Avatar from '../../components/Avatar/Avatar';
-import ServerMembersDrawer from '../../components/ServerMembersDrawer/ServerMembersDrawer';
 
 const DRAWER_WIDTH = 240;
 
@@ -42,6 +41,7 @@ function MainPane (props: {routeName?: string}) {
 function LeftPane (props: {width: number, routeName?: string}) {
   return <div style={{width: `${props.width}px`}} className={styles.leftPane}>
     {props.routeName === 'server_messages' && <ServerDrawer />}
+    {props.routeName === 'inbox' && <InboxDrawer />}
   </div>
 }
 
