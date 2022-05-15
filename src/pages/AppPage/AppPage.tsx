@@ -9,6 +9,7 @@ import InboxDrawer from '../../components/InboxDrawer/InboxDrawer';
 import ServerMembersDrawer from '../../components/ServerMembersDrawer/ServerMembersDrawer';
 import MessagePane from '../../components/MessagePane/MessagePane';
 import ExploreServerPane from '../../components/ExploreServerPane/ExploreServerPane';
+import { getStorageString, StorageKeys } from '../../common/localStorage';
 
 const DRAWER_WIDTH = 240;
 
@@ -16,7 +17,7 @@ const DRAWER_WIDTH = 240;
 export default function AppPage(props: {routeName?: string}) {
   
   useEffect(() => {
-    client.login(localStorage['token']);
+    client.login(getStorageString(StorageKeys.USER_TOKEN, ''));
   }, [])
   
 

@@ -4,6 +4,7 @@ import { loginRequest } from '../../services/UserService';
 import styles from './LoginPage.module.scss';
 import {useEffect, useState} from 'preact/hooks';
 import CustomButton from '../../components/CustomButton/CustomButton';
+import { getStorageString, setStorageString, StorageKeys } from '../../common/localStorage';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   
   useEffect(() => {
-    if (localStorage['token']) {
+    if (getStorageString(StorageKeys.USER_TOKEN, null)) {
       navigate('/app');
     }
   }, [])
@@ -27,7 +28,7 @@ export default function LoginPage() {
     })
     setRequestSent(false);
     if (!response) return;
-    localStorage['token'] = response.token;
+    setStorageString(StorageKeys.USER_TOKEN, response.token);
     navigate('/app')
   }
 
