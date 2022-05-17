@@ -2,6 +2,7 @@ import { Server } from 'chat-api/build/store/Servers';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'preact/hooks';
 import { Link, useLocation} from 'react-router-dom';
+import { classNames } from '../../common/classNames';
 import { client } from '../../common/client';
 import { store } from '../../store/Store';
 import { Tab } from '../../store/TabStore';
@@ -21,15 +22,9 @@ export const TabList = observer(() => {
 export default TabList;
 
 const TabItem = observer((props: {tab: Tab}) => {
-  const [server, setServer] = useState<Server | null>(null);
   const location = useLocation();
+  const server = client.servers.cache[props.tab.serverId!];
 
-  useEffect(() => {
-    setServer(null);
-      const server = client.servers.cache[props.tab.serverId!];
-      if (!server) return;
-      setServer(server);
-  }, [props.tab]);
 
   const onDoubleClick = () => {
     store.tabStore.updateTab(props.tab.path, {opened: true})
@@ -47,8 +42,8 @@ const TabItem = observer((props: {tab: Tab}) => {
   
   return (
     <Link to={props.tab.path} className={styles.tab + ` ${props.tab.opened && styles.opened}`} selected={selected} onDblClick={onDoubleClick}>
-      {props.tab.iconName && <Icon name={props.tab.iconName} size={20} className={styles.icon} />}
-      {server && <Avatar size={20} hexColor={server.hexColor} />}
+      {props.tab.iconName && <Icon name={props.tab.iconName} className={classNames(styles.icon, server ? styles.hasAvatar : '')} />}
+      {server && <Avatar size={25} hexColor={server.hexColor} />}
       <div className={styles.details}>
         <div className={styles.title}>{props.tab.title}</div>
         {subName && <div className={styles.subTitle}>{subName}</div>}

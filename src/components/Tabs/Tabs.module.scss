@@ -94,7 +94,14 @@
 
 
   .icon {
-    margin-right: 3px;
+    font-size: 20px;
+    &.hasAvatar {
+      position: absolute;
+      font-size: 11px;
+      left: 22px;
+      top: 21px;
+      text-shadow: 0px 0px 5px black;
+    }
   }
 
   .closeIcon {

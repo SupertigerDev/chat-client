@@ -21,6 +21,7 @@ export default function MessagePane() {
       store.tabStore.openTab({
         title: channel.name,
         serverId: serverId!,
+        iconName: 'dns',
         path: SERVER_MESSAGES(serverId!, channelId!),
       }, navigate, false);
     })
