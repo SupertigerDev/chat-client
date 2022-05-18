@@ -44,7 +44,7 @@ function Channel(props: {channel: ServerChannel, selected: boolean}) {
   const { channel } = props;
 
   return (
-    <Link to={SERVER_MESSAGES(channel._id, channel._id)} className={styles.channel} selected={props.selected}>
+    <Link to={SERVER_MESSAGES(channel.server._id, channel._id)} className={styles.channel} selected={props.selected}>
       <div className={styles.channelName}>{channel.name}</div>
     </Link>
   )
