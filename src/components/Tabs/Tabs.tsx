@@ -1,8 +1,6 @@
-import { Server } from 'chat-api/build/store/Servers';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'preact/hooks';
 import { Link, useLocation} from 'react-router-dom';
-import { classNames } from '../../common/classNames';
+import { classNames, conditionalClass } from '../../common/classNames';
 import { client } from '../../common/client';
 import { store } from '../../store/Store';
 import { Tab } from '../../store/TabStore';
@@ -14,7 +12,7 @@ export const TabList = observer(() => {
   const {tabs} = store.tabStore;
   return (
     <div className={styles.tabs}>
-      {tabs.map(tab => <TabItem tab={tab} />)}
+      {tabs.map(tab => <TabItem key={tab.path} tab={tab} />)}
     </div>
   )
 })
@@ -41,7 +39,7 @@ const TabItem = observer((props: {tab: Tab}) => {
   }
   
   return (
-    <Link to={props.tab.path} className={styles.tab + ` ${props.tab.opened && styles.opened}`} selected={selected} onDblClick={onDoubleClick}>
+    <Link to={props.tab.path} className={classNames(styles.tab, conditionalClass(props.tab.opened, styles.opened), conditionalClass(selected, styles.selected))} onDoubleClick={onDoubleClick}>
       {props.tab.iconName && <Icon name={props.tab.iconName} className={classNames(styles.icon, server ? styles.hasAvatar : '')} />}
       {server && <Avatar size={25} hexColor={server.hexColor} />}
       <div className={styles.details}>

@@ -52,7 +52,7 @@
   text-decoration: none;
   
   &:hover,
-  &[selected] {
+  &.selected {
     background-color: rgba(255, 255, 255, 0.2);
   }
 
@@ -65,7 +65,7 @@
     height: 15px;
     transition: 0.2s;
   }  
-  &[selected]:after {
+  &.selected:after {
     background-color: var(--primary-color);
   }  
 }

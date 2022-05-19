@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import { loginRequest } from '../../services/UserService';
 import styles from './LoginPage.module.scss';
-import {useEffect, useState} from 'preact/hooks';
+import { useState, useEffect } from 'react';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import { getStorageString, setStorageString, StorageKeys } from '../../common/localStorage';
 

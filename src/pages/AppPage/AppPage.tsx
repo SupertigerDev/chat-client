@@ -1,5 +1,4 @@
-import { lazy } from 'preact/compat';
-import { useEffect } from 'preact/hooks';
+import { lazy, useEffect } from 'react';
 import styles from './AppPage.module.scss';
 import { client } from '../../common/client';
 import SidePane from '../../components/SidePane/SidePane';

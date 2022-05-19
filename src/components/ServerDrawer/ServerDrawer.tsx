@@ -1,9 +1,8 @@
 import { ServerChannel } from 'chat-api/build/store/Channels';
 import { Server } from 'chat-api/build/store/Servers';
-import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'preact/hooks';
 import { Link, useParams } from 'react-router-dom';
+import { classNames, conditionalClass } from '../../common/classNames';
 import { client } from '../../common/client';
 import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
 import { Icon } from '../Icon/Icon';
@@ -44,7 +43,7 @@ function Channel(props: {channel: ServerChannel, selected: boolean}) {
   const { channel } = props;
 
   return (
-    <Link to={SERVER_MESSAGES(channel.server._id, channel._id)} className={styles.channel} selected={props.selected}>
+    <Link to={SERVER_MESSAGES(channel.server._id, channel._id)} className={classNames(styles.channel, conditionalClass(props.selected, styles.selected))}>
       <div className={styles.channelName}>{channel.name}</div>
     </Link>
   )

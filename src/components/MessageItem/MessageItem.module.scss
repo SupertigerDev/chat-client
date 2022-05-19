@@ -133,7 +133,7 @@
         margin-left: 35px;
     }
   }
-  &[data-animate] .messageItemContainer {
+  &.animate .messageItemContainer {
     transform: translateY(100%);
     animation-name: goUp;
     animation-duration: 0.3s;

@@ -14,13 +14,13 @@ const InboxDrawerFriends = observer(() => {
   return (
     <div className={styles.inboxDrawerFriends}>
       <div className={styles.title}>Requests ({separatedFriends.requests.length})</div>
-      {separatedFriends.requests.map(friend => ( <FriendItem friend={friend} /> ))}
+      {separatedFriends.requests.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
 
       <div className={styles.title}>Online ({separatedFriends.onlineFriends.length})</div>
-      {separatedFriends.onlineFriends.map(friend => ( <FriendItem friend={friend} /> ))}
+      {separatedFriends.onlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
       
       <div className={styles.title}>Offline ({separatedFriends.offlineFriends.length})</div>
-      {separatedFriends.offlineFriends.map(friend => ( <FriendItem friend={friend} /> ))}
+      {separatedFriends.offlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
     </div>
   )
 });

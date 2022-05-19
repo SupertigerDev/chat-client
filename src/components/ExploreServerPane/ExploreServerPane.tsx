@@ -1,5 +1,5 @@
 import styles from './ExploreServerPane.module.scss';
-import { useEffect, useState } from "preact/hooks";
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { joinServerByInviteCode, serverDetailsByInviteCode, ServerWithMemberCount } from "../../services/ServerService";
 import Avatar from "../Avatar/Avatar";
@@ -60,7 +60,7 @@ export default function ExploreServerPane() {
 }
 
 
-const ServerPage = observer((props: {server: ServerWithMemberCount, inviteCode: string}) => {
+const ServerPage = observer((props: {server: ServerWithMemberCount, inviteCode?: string}) => {
   const navigate = useNavigate();
   let [joinClicked, setJoinClicked] = useState(false);
   const {server} = props;
@@ -75,6 +75,7 @@ const ServerPage = observer((props: {server: ServerWithMemberCount, inviteCode: 
   
   const joinServerClick = () => {
     if (joinClicked) return;
+    if (!props.inviteCode) return;
     setJoinClicked(true);
     joinServerByInviteCode(props.inviteCode).catch((err) => {
       alert(err.message)
@@ -109,7 +110,7 @@ function InvalidServerPage (props: {message: string, inviteId?: string, onJoinCl
   const [inviteCode, setInviteCode] = useState<string>(props.inviteId || "");
 
   return (
-    <div class={styles.invalidServerPage}>
+    <div className={styles.invalidServerPage}>
       <Icon name='error' color='var(--alert-color)' size={80} />
       <div className={styles.errorMessage}>{props.message}</div>
       <div className={styles.message}>Please try again later.</div>

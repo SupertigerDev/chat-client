@@ -1,6 +1,6 @@
 import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { client } from '../../common/client';
 import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
@@ -73,7 +73,7 @@ const MessageLogArea = observer(() => {
     {messages?.map((message, i) => (
       <MessageItem
         key={message.tempId || message._id}
-        animate={openedTimestamp && message.createdAt > openedTimestamp}
+        animate={!!openedTimestamp && message.createdAt > openedTimestamp}
         message={message}
         beforeMessage={messages[i - 1]}
       />)

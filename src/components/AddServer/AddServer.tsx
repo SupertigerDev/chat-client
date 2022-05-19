@@ -4,7 +4,7 @@ import { Icon } from "../Icon/Icon";
 import CustomInput from '../CustomInput/CustomInput';
 import CustomButton from '../CustomButton/CustomButton';
 import { createServer } from '../../services/ServerService';
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 
 export function AddServer() {
   const [name, setName] = useState('');

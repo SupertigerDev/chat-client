@@ -6,9 +6,10 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { Icon } from '../Icon/Icon';
 import Avatar from '../Avatar/Avatar';
 import Modal from '../Modal/Modal';
-import { useState } from 'preact/hooks';
+import { useState } from 'react';
 import { AddServer } from '../AddServer/AddServer';
 import { INBOX, SERVER_MESSAGES } from '../../common/RouterEndpoints';
+import { classNames, conditionalClass } from '../../common/classNames';
 
 
 export default function SidePane () {
@@ -33,7 +34,7 @@ function InboxItem() {
   const location = useLocation();
   const isSelected = location.pathname.startsWith(INBOX());
 
-  return <Link to={INBOX()} className={`${styles.item} ${styles.settingsIcon}`} selected={isSelected} >
+  return <Link to={INBOX()} className={classNames(styles.item, styles.settingsIcon, conditionalClass(isSelected, styles.selected))} >
     <Icon name='all_inbox' />
   </Link>
 }
@@ -55,13 +56,13 @@ const UserItem = observer(() => {
 
 function ServerItem(props: {server: Server, selected?: boolean}) {
   const { _id, defaultChannel } = props.server;
-  return <Link to={SERVER_MESSAGES(_id, defaultChannel)} className={styles.item} selected={props.selected} >
+  return <Link to={SERVER_MESSAGES(_id, defaultChannel)} className={classNames(styles.item, conditionalClass(props.selected, styles.selected))} >
     <Avatar size={35} hexColor={props.server.hexColor} />
   </Link>
 }
 
 function Item(props: {iconName: string, selected?: boolean, onClick?: () => void}) {
-  return <div className={styles.item} selected={props.selected} onClick={props.onClick} >
+  return <div className={classNames(styles.item, conditionalClass(props.selected, styles.selected))} onClick={props.onClick} >
     <Icon name={props.iconName} size={40} />
   </div>
 }

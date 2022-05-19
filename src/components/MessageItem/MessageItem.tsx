@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import { classNames, conditionalClass } from '../../common/classNames';
 import { LocalMessage, MessageSentStatus } from '../../store/MessageStore';
 import Avatar from '../Avatar/Avatar';
 import { Icon } from '../Icon/Icon';
@@ -41,7 +42,7 @@ function FloatOptions(props: { message: LocalMessage, isCompact: boolean }) {
 
 
 
-const MessageItem = observer((props: { message: LocalMessage, beforeMessage: LocalMessage, animate: boolean }) => {
+const MessageItem = observer((props: { message: LocalMessage, beforeMessage: LocalMessage, animate?: boolean }) => {
 
   const Details = () => (
     <div className={styles.details}>
@@ -58,7 +59,7 @@ const MessageItem = observer((props: { message: LocalMessage, beforeMessage: Loc
   const isCompact = isSameCreator && isDateUnderFiveMinutes;
 
   return (
-    <div className={`${styles.messageItem} ${isCompact ? styles.compact : '' }`} data-animate={props.animate}>
+    <div className={classNames(styles.messageItem, conditionalClass(isCompact, styles.compact), conditionalClass(props.animate, styles.animate))}>
       <FloatOptions isCompact={isCompact} message={props.message} />
       <div className={styles.messageItemOuterContainer}>
         <div className={styles.messageItemContainer}>

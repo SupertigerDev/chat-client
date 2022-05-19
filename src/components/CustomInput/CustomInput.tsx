@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'preact/hooks';
 import styles from './CustomInput.module.scss';
 
 interface Props {

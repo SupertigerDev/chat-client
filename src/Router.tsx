@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from "react-router-dom";
 
-import {lazy} from 'preact/compat';
+import { lazy } from 'react';
 import { CustomSuspense } from "./components/CustomSuspense/CustomSuspense";
 
 
