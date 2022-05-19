@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Icon } from '../Icon/Icon';
 import { useState } from 'preact/hooks';
 import { getStorageNumber, setStorageNumber, StorageKeys } from '../../common/localStorage';
+import InboxDrawerFriends from '../InboxDrawerFriends/InboxDrawerFriends';
 
 function Header (props: {selectedIndex: number, onTabClick: (index: number) => void}) {
   const { selectedIndex, onTabClick } = props;
@@ -26,6 +27,7 @@ const InboxDrawer = observer(() => {
   return (
     <div className={styles.inboxDrawer}>
       <Header selectedIndex={selectedIndex} onTabClick={onTabClick} />
+      {selectedIndex === 1 && <InboxDrawerFriends /> }
     </div>
   )
 });
