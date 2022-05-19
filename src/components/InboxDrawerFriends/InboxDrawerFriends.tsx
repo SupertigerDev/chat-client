@@ -1,15 +1,28 @@
 import { Friend, FriendStatus } from "chat-api/build/store/Friends";
 import { UserStatus } from "chat-api/build/store/Users";
+import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
+import { useEffect, useState, useTransition } from "react";
 
 import { client } from "../../common/client";
 import Avatar from "../Avatar/Avatar";
 import styles from "./InboxDrawerFriends.module.scss";
 
 const InboxDrawerFriends = observer(() => {
-  const friends = client.friends.array;
+  const [separatedFriends, setSeparatedFriends] = useState<ReturnType<typeof separateFriends>>();
+  const [pending, startTransition] = useTransition();
+  
+  useEffect(() => {
+    const dispose = autorun(() => {
+      startTransition(() => {
+        const friends = client.friends.array;
+        setSeparatedFriends(separateFriends(friends));
+      })
+    })
+    return dispose;
+  }, []);
 
-  const separatedFriends = separateFriends(friends);
+  if (!separatedFriends) return null;
 
   return (
     <div className={styles.inboxDrawerFriends}>
