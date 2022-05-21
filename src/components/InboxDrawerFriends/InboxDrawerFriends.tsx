@@ -22,15 +22,23 @@ const InboxDrawerFriends = observer(() => {
     return dispose;
   }, []);
 
+  const onFriendClick = (friend: Friend) => {
+    friend.acceptFriendRequest();
+  }
+  const onFriendClick2 = (friend: Friend) => {
+    friend.removeFriend();
+  }
+
+
   if (!separatedFriends) return null;
 
   return (
     <div className={styles.inboxDrawerFriends}>
       <div className={styles.title}>Requests ({separatedFriends.requests.length})</div>
-      {separatedFriends.requests.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
+      {separatedFriends.requests.map(friend => ( <FriendItem key={friend.userId} friend={friend} onClick={onFriendClick}  /> ))}
 
       <div className={styles.title}>Online ({separatedFriends.onlineFriends.length})</div>
-      {separatedFriends.onlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
+      {separatedFriends.onlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} onClick={onFriendClick2}  /> ))}
       
       <div className={styles.title}>Offline ({separatedFriends.offlineFriends.length})</div>
       {separatedFriends.offlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
@@ -39,11 +47,11 @@ const InboxDrawerFriends = observer(() => {
 });
 export default InboxDrawerFriends;
 
-export function FriendItem(props: { friend: Friend }) {
+export function FriendItem(props: { friend: Friend, onClick?: (friend: Friend) => void }) {
   const { friend } = props;
   const { user } = friend;
   return (
-    <div className={styles.friendItem}>
+    <div className={styles.friendItem} onClick={() => props.onClick?.(friend)}>
       <Avatar hexColor={user.hexColor} size={25} />
       <div className={styles.username}>{user.username}</div>
     </div>
