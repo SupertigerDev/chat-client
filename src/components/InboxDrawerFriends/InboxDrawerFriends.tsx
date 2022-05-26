@@ -4,8 +4,10 @@ import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState, useTransition } from "react";
 
+
 import { client } from "../../common/client";
-import Avatar from "../Avatar/Avatar";
+
+import FriendItem from "../InboxDrawerFriendItem/InboxDrawerFriendItem";
 import styles from "./InboxDrawerFriends.module.scss";
 
 const InboxDrawerFriends = observer(() => {
@@ -22,12 +24,7 @@ const InboxDrawerFriends = observer(() => {
     return dispose;
   }, []);
 
-  const onFriendClick = (friend: Friend) => {
-    friend.acceptFriendRequest();
-  }
-  const onFriendClick2 = (friend: Friend) => {
-    friend.removeFriend();
-  }
+
 
 
   if (!separatedFriends) return null;
@@ -35,10 +32,10 @@ const InboxDrawerFriends = observer(() => {
   return (
     <div className={styles.inboxDrawerFriends}>
       <div className={styles.title}>Requests ({separatedFriends.requests.length})</div>
-      {separatedFriends.requests.map(friend => ( <FriendItem key={friend.userId} friend={friend} onClick={onFriendClick}  /> ))}
+      {separatedFriends.requests.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
 
       <div className={styles.title}>Online ({separatedFriends.onlineFriends.length})</div>
-      {separatedFriends.onlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} onClick={onFriendClick2}  /> ))}
+      {separatedFriends.onlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
       
       <div className={styles.title}>Offline ({separatedFriends.offlineFriends.length})</div>
       {separatedFriends.offlineFriends.map(friend => ( <FriendItem key={friend.userId} friend={friend} /> ))}
@@ -47,16 +44,10 @@ const InboxDrawerFriends = observer(() => {
 });
 export default InboxDrawerFriends;
 
-export function FriendItem(props: { friend: Friend, onClick?: (friend: Friend) => void }) {
-  const { friend } = props;
-  const { user } = friend;
-  return (
-    <div className={styles.friendItem} onClick={() => props.onClick?.(friend)}>
-      <Avatar hexColor={user.hexColor} size={25} />
-      <div className={styles.username}>{user.username}</div>
-    </div>
-  )
-}
+
+
+
+
 
 function separateFriends(friends: Friend[]) {
   const requests = [];

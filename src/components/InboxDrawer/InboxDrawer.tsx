@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { getStorageNumber, setStorageNumber, StorageKeys } from '../../common/localStorage';
 import InboxDrawerFriends from '../InboxDrawerFriends/InboxDrawerFriends';
 import { classNames, conditionalClass } from '../../common/classNames';
+import { client } from '../../common/client';
+import FriendItem from '../InboxDrawerFriendItem/InboxDrawerFriendItem';
 
 function Header (props: {selectedIndex: number, onTabClick: (index: number) => void}) {
   const { selectedIndex, onTabClick } = props;
@@ -28,11 +30,19 @@ const InboxDrawer = observer(() => {
   return (
     <div className={styles.inboxDrawer}>
       <Header selectedIndex={selectedIndex} onTabClick={onTabClick} />
+      {selectedIndex === 0 && <InboxDrawerTab/>}
       {selectedIndex === 1 && <InboxDrawerFriends /> }
     </div>
   )
 });
 
+
+const InboxDrawerTab = observer(() => {
+  const inbox = client.inbox;
+  return <div>
+    {inbox.array.map(inbox => inbox.channel && <FriendItem key={inbox.channel._id} user={inbox.channel.recipient!}  />)}
+  </div>
+});
 
 
 

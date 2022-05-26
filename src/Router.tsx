@@ -16,6 +16,7 @@ export default function Router() {
       <Route path="app" element={<CustomSuspense><AppPage /></CustomSuspense>} />
 
       <Route path="app/inbox" element={<CustomSuspense><AppPage routeName="inbox" /></CustomSuspense>} />
+      <Route path="app/inbox/:channelId" element={<CustomSuspense><AppPage routeName="inbox_messages" /></CustomSuspense>} />
 
       <Route path="app/servers/:serverId/:channelId" element={<CustomSuspense><AppPage routeName="server_messages" /></CustomSuspense>} />
 

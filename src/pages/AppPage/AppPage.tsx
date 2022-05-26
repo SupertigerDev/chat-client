@@ -38,6 +38,7 @@ function MainPane (props: {routeName?: string}) {
   return <div className={styles.mainPane}>
     <Tabs />
     {props.routeName === 'server_messages' && <CustomSuspense><MessagePane /></CustomSuspense>}
+    {props.routeName === 'inbox_messages' && <CustomSuspense><MessagePane /></CustomSuspense>}
     {props.routeName === 'explore_server' && <CustomSuspense><ExploreServerPane /></CustomSuspense>}
   </div>
 }
@@ -45,6 +46,7 @@ function MainPane (props: {routeName?: string}) {
 function LeftPane (props: {width: number, routeName?: string}) {
   return <div style={{width: `${props.width}px`}} className={styles.leftPane}>
     {props.routeName === 'server_messages' && <CustomSuspense><ServerDrawer /></CustomSuspense>}
+    {props.routeName === 'inbox_messages' && <CustomSuspense><InboxDrawer /></CustomSuspense>}
     {props.routeName === 'inbox' && <CustomSuspense><InboxDrawer /></CustomSuspense>}
   </div>
 }
