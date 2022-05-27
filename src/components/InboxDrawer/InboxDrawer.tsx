@@ -7,16 +7,45 @@ import InboxDrawerFriends from '../InboxDrawerFriends/InboxDrawerFriends';
 import { classNames, conditionalClass } from '../../common/classNames';
 import { client } from '../../common/client';
 import FriendItem from '../InboxDrawerFriendItem/InboxDrawerFriendItem';
+import { FriendStatus } from 'chat-api/build/store/Friends';
 
 function Header (props: {selectedIndex: number, onTabClick: (index: number) => void}) {
   const { selectedIndex, onTabClick } = props;
+
+
+  const friendRequests = client.friends.array.filter(friend => friend.status === FriendStatus.PENDING);
+
   return (
     <div className={styles.header}>
-      <div className={classNames(styles.headerItem,  conditionalClass(selectedIndex === 0, styles.selected))} onClick={() => onTabClick(0)}> <Icon className={styles.headerIcon} name='inbox' size={18} />Inbox</div>
-      <div className={classNames(styles.headerItem,  conditionalClass(selectedIndex === 1, styles.selected))} onClick={() => onTabClick(1)}> <Icon className={styles.headerIcon} name='group' size={18} />Friends</div>
+      <HeaderItem
+        name='Inbox'
+        iconName='inbox'
+        selected={selectedIndex === 0}
+        onClick={() => onTabClick(0)}
+
+      />
+      <HeaderItem
+        name='Friends'
+        iconName='group'
+        selected={selectedIndex === 1}
+        notificationCount={friendRequests.length}
+        onClick={() => onTabClick(1)}
+    />
     </div>
   )
 }
+
+function HeaderItem (props: {name: string, iconName: string, selected: boolean, onClick: () => void, notificationCount?: number}) {
+  return (
+    <div className={classNames(styles.headerItem,  conditionalClass(props.selected, styles.selected))} onClick={props.onClick}>
+      <Icon className={styles.headerIcon} name={props.iconName} size={18} />
+      {props.name}
+      {!!props.notificationCount && <div className={styles.notificationCount}>{props.notificationCount}</div>}
+    </div>
+  )
+}
+
+
 
 const InboxDrawer = observer(() => {
   const [selectedIndex, setSelectedIndex] = useState(getStorageNumber(StorageKeys.INBOX_DRAWER_SELECTED_INDEX, 0));

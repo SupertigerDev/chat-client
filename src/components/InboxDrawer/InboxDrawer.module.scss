@@ -21,6 +21,23 @@
       margin-right: 5px;
     }
 
+    .notificationCount {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      margin-left: 5px;
+      font-size: 0.8em;
+      background-color: var(--alert-color);
+      border-radius: 50%;
+      height: 17px;
+      width: 17px;
+    }
+    &.selected .notificationCount {
+      color: var(--primary-color);
+      background-color: white;
+    }
+
     &:hover {
       color: rgba(255, 255, 255, 0.8);
       background-color: rgba(255, 255, 255, 0.1);

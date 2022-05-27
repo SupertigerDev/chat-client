@@ -48,7 +48,7 @@ export default function FriendItem(props: { friend?: Friend, user?: User}) {
       <div className={styles.username}>{user.username}</div>
       <div className={styles.requestButtons}>
         {showAccept && <CustomButton className={styles.button} iconName="check" onClick={onAcceptClick} />}
-        {showDecline && <CustomButton className={styles.button} iconName="cancel" color="var(--alert-color)" onClick={onDeclineClick} />}
+        {showDecline && <CustomButton className={styles.button} iconName="close" color="var(--alert-color)" onClick={onDeclineClick} />}
       </div>
       
     </div>
