@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { client } from '../../common/client';
-import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
+import { INBOX_MESSAGES, SERVER_MESSAGES } from '../../common/RouterEndpoints';
 import { store } from '../../store/Store';
 import CustomButton from '../CustomButton/CustomButton';
 import MessageItem from '../MessageItem/MessageItem';
@@ -17,12 +17,17 @@ export default function MessagePane() {
     const disposeAutorun = autorun(() => {
       const channel = client.channels.cache[channelId!];
       if (!channel) return;
+
+      const path = serverId ? SERVER_MESSAGES(serverId!, channelId!) : INBOX_MESSAGES(channelId!);
+
+      const userId = channel.recipient?._id;
       
       store.tabStore.openTab({
         title: channel.name,
         serverId: serverId!,
-        iconName: 'dns',
-        path: SERVER_MESSAGES(serverId!, channelId!),
+        userId: userId,
+        iconName: serverId ? 'dns' : 'inbox',
+        path: path,
       }, navigate, false);
     })
 
