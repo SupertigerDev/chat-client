@@ -7,7 +7,7 @@ import Endpoints from "./Endpoints";
 // error returns {path?, message}
 export async function loginRequest(email: string, password: string): Promise<{token: string}> {
   return request({
-    url: "http://localhost:80/api" + Endpoints.loginEndpoint(),
+    url: import.meta.env.VITE_SERVER_URL + "/api" + Endpoints.loginEndpoint(),
     method: "POST",
     body: {
       email,
@@ -17,7 +17,7 @@ export async function loginRequest(email: string, password: string): Promise<{to
 }
 export async function registerRequest(email: string, username: string, password: string): Promise<{token: string}> {
   return request({
-    url: "http://localhost:80/api" + Endpoints.registerEndpoint(),
+    url: import.meta.env.VITE_SERVER_URL + "/api" + Endpoints.registerEndpoint(),
     method: "POST",
     body: {
       email,

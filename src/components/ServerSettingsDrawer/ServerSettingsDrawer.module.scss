@@ -1,12 +1,4 @@
-
-
-.channelList {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-}
-
-.channel {
+.item {
   display: flex;
   position: relative;
   align-items: center;
@@ -36,7 +28,7 @@
   &.selected:after {
     background-color: var(--primary-color);
   }  
-  .channelName {
+  .label {
     margin-left: 5px;
   }
 

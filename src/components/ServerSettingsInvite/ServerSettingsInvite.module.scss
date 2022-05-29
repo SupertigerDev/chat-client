@@ -1,0 +1,32 @@
+.inviteItem {
+  display: flex;
+  align-items: center;
+
+  margin: 3px;
+  border-radius: 4px;
+  padding: 5px;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .details {
+    margin-left: 5px;
+  }
+  .username {
+    font-weight: bold;
+    color: white;
+  }
+  .usernameText {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: normal;
+  }
+  .uses {
+    font-weight: bold;
+    color: white;
+  }
+  .usesText {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: normal;
+  }
+
+}

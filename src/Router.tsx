@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from "react-router-dom";
 
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
 import { CustomSuspense } from "./components/CustomSuspense/CustomSuspense";
 
 
@@ -10,6 +10,7 @@ const RegisterPage = lazy(() => import('./pages/RegisterPage/RegisterPage'));
 
 
 export default function Router() {
+
   return (
     <Routes>
       <Route index element={<Home />} />
@@ -18,7 +19,10 @@ export default function Router() {
       <Route path="app/inbox" element={<CustomSuspense><AppPage routeName="inbox" /></CustomSuspense>} />
       <Route path="app/inbox/:channelId" element={<CustomSuspense><AppPage routeName="inbox_messages" /></CustomSuspense>} />
 
+
+
       <Route path="app/servers/:serverId/:channelId" element={<CustomSuspense><AppPage routeName="server_messages" /></CustomSuspense>} />
+      <Route path="app/servers/:serverId/settings/:path" element={<CustomSuspense><AppPage routeName="server_settings" /></CustomSuspense>} />
 
 
       <Route path="app/explore/servers/invites/:inviteId" element={<CustomSuspense><AppPage routeName="explore_server" /></CustomSuspense>} />

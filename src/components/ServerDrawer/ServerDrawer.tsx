@@ -1,47 +1,38 @@
-import { ServerChannel } from 'chat-api/build/store/Channels';
-import { Server } from 'chat-api/build/store/Servers';
+import { Channel } from 'chat-api/build/store/Channels';
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
 import { classNames, conditionalClass } from '../../common/classNames';
 import { client } from '../../common/client';
 import { SERVER_MESSAGES } from '../../common/RouterEndpoints';
-import { Icon } from '../Icon/Icon';
+import Header from '../ServerDrawerHeader/ServerDrawerHeader';
 import styles from './ServerDrawer.module.scss';
 
-const ServerDrawer = observer(() => {
+const ServerDrawer = () => {
+  return (
+    <div className={styles.serverDrawer}>
+      <Header />
+      <ChannelList />
+    </div>
+  )
+};
+
+
+
+const ChannelList = observer(() => {
   const {serverId, channelId} = useParams();
   const server = client.servers.cache[serverId!];
   return (
-    <div className={styles.serverDrawer}>
-      <Header server={server} />
-      <ChannelList server={server} />
+    <div className={styles.channelList}>
+      {server?.channels.map(channel => (
+        <ChannelItem channel={channel} key={channel._id} selected={channelId === channel._id} />
+      ))}
     </div>
   )
 });
 
-function Header (props: {server?: Server}) {
-  return (
-    <div className={styles.header}>
-      <div>{props.server?.name}</div>
-      <Icon size={18} name='expand_more' className={styles.showMoreIcon} />
-    </div>
-  )
-}
-
-function ChannelList(props: {server: Server}) {
-  const {channelId} = useParams();
-  return (
-    <div className={styles.channelList}>
-      {props?.server?.channels.map(channel => (
-        <Channel channel={channel} key={channel._id} selected={channelId === channel._id} />
-      ))}
-    </div>
-  )
-}
-
-function Channel(props: {channel: ServerChannel, selected: boolean}) {
+function ChannelItem(props: {channel: Channel, selected: boolean}) {
   const { channel } = props;
-
+  if (!channel.server?._id) return null;
   return (
     <Link to={SERVER_MESSAGES(channel.server._id, channel._id)} className={classNames(styles.channel, conditionalClass(props.selected, styles.selected))}>
       <div className={styles.channelName}>{channel.name}</div>

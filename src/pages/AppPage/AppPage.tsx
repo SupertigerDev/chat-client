@@ -8,8 +8,10 @@ const ServerDrawer = lazy(() => import('../../components/ServerDrawer/ServerDraw
 const InboxDrawer = lazy(() => import('../../components/InboxDrawer/InboxDrawer'));
 const ServerMembersDrawer = lazy(() => import('../../components/ServerMembersDrawer/ServerMembersDrawer'));
 
+const ServerSettingsPane = lazy(() => import('../../components/ServerSettingsPane/ServerSettingsPane'));
 const MessagePane = lazy(() => import('../../components/MessagePane/MessagePane'));
 const ExploreServerPane = lazy(() => import('../../components/ExploreServerPane/ExploreServerPane'));
+const ServerSettingsDrawer = lazy(() => import('../../components/ServerSettingsDrawer/ServerSettingsDrawer'));
 
 import { getStorageString, StorageKeys } from '../../common/localStorage';
 import { CustomSuspense } from '../../components/CustomSuspense/CustomSuspense';
@@ -22,7 +24,7 @@ export default function AppPage(props: {routeName?: string}) {
   useEffect(() => {
     client.login(getStorageString(StorageKeys.USER_TOKEN, ''));
   }, [])
-  
+
 
   return (
     <div className={styles.appPage}>
@@ -30,6 +32,7 @@ export default function AppPage(props: {routeName?: string}) {
       <LeftPane width={DRAWER_WIDTH} routeName={props.routeName} />
       <MainPane routeName={props.routeName}/>
       {props.routeName === "server_messages" && <RightPane width={DRAWER_WIDTH}/>}
+      {props.routeName === "server_settings" && <RightPane width={DRAWER_WIDTH}/>}
     </div>
   )
 }
@@ -37,6 +40,7 @@ export default function AppPage(props: {routeName?: string}) {
 function MainPane (props: {routeName?: string}) {
   return <div className={styles.mainPane}>
     <Tabs />
+    {props.routeName === "server_settings" && <CustomSuspense><ServerSettingsPane/></CustomSuspense>}
     {props.routeName === 'server_messages' && <CustomSuspense><MessagePane /></CustomSuspense>}
     {props.routeName === 'inbox_messages' && <CustomSuspense><MessagePane /></CustomSuspense>}
     {props.routeName === 'explore_server' && <CustomSuspense><ExploreServerPane /></CustomSuspense>}
@@ -45,6 +49,7 @@ function MainPane (props: {routeName?: string}) {
 
 function LeftPane (props: {width: number, routeName?: string}) {
   return <div style={{width: `${props.width}px`}} className={styles.leftPane}>
+    {props.routeName === 'server_settings' && <CustomSuspense><ServerSettingsDrawer /></CustomSuspense>}
     {props.routeName === 'server_messages' && <CustomSuspense><ServerDrawer /></CustomSuspense>}
     {props.routeName === 'inbox_messages' && <CustomSuspense><InboxDrawer /></CustomSuspense>}
     {props.routeName === 'inbox' && <CustomSuspense><InboxDrawer /></CustomSuspense>}

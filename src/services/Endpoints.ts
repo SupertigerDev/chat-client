@@ -4,6 +4,6 @@ export default {
 
 
   serversEndpoint: () => `/servers`,
-  serverInvitesEndpoint: (serverId: string) => `/servers/${serverId}/invite`,
+  serverInvitesEndpoint: (serverId: string) => `/servers/${serverId}/invites`,
   serverInviteCodeEndpoint: (inviteCode: string) => `/servers/invites/${inviteCode}`,
 }

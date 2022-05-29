@@ -5,4 +5,4 @@ import Router from './Router'
 import './index.css'
 import 'material-icons/iconfont/round.scss';
 
-ReactDOM.createRoot(document.getElementById('app')!).render(<React.StrictMode><BrowserRouter><Router /></BrowserRouter></React.StrictMode>)
+ReactDOM.createRoot(document.getElementById('app')!).render(<BrowserRouter><Router /></BrowserRouter>)
