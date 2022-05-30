@@ -1,7 +1,8 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useParams } from "react-router-dom";
 
 import { lazy, useEffect } from 'react';
 import { CustomSuspense } from "./components/CustomSuspense/CustomSuspense";
+import { EXPLORE_SERVER_INVITE } from "./common/RouterEndpoints";
 
 
 const AppPage = lazy(() => import('./pages/AppPage/AppPage'));
@@ -26,6 +27,9 @@ export default function Router() {
 
 
       <Route path="app/explore/servers/invites/:inviteId" element={<CustomSuspense><AppPage routeName="explore_server" /></CustomSuspense>} />
+      <Route path="i/:inviteId" element={ <InviteRedirect/> } />
+
+
 
 
 
@@ -35,6 +39,13 @@ export default function Router() {
     </Routes>
   );
 }
+
+
+function InviteRedirect() {
+  const { inviteId } = useParams();
+  return <Navigate to={EXPLORE_SERVER_INVITE(inviteId!)} />
+}
+
 
 
 function Home() {

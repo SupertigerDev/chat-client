@@ -1,5 +1,6 @@
 import { request } from "./request";
 import Endpoints from "./Endpoints";
+import env from "../common/env";
 
 
 
@@ -7,7 +8,7 @@ import Endpoints from "./Endpoints";
 // error returns {path?, message}
 export async function loginRequest(email: string, password: string): Promise<{token: string}> {
   return request({
-    url: import.meta.env.VITE_SERVER_URL + "/api" + Endpoints.loginEndpoint(),
+    url: env.SERVER_URL + "/api" + Endpoints.loginEndpoint(),
     method: "POST",
     body: {
       email,
@@ -17,7 +18,7 @@ export async function loginRequest(email: string, password: string): Promise<{to
 }
 export async function registerRequest(email: string, username: string, password: string): Promise<{token: string}> {
   return request({
-    url: import.meta.env.VITE_SERVER_URL + "/api" + Endpoints.registerEndpoint(),
+    url: env.SERVER_URL + "/api" + Endpoints.registerEndpoint(),
     method: "POST",
     body: {
       email,

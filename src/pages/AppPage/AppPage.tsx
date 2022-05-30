@@ -1,4 +1,4 @@
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useRef } from 'react';
 import styles from './AppPage.module.scss';
 import { client } from '../../common/client';
 import SidePane from '../../components/SidePane/SidePane';
@@ -15,6 +15,8 @@ const ServerSettingsDrawer = lazy(() => import('../../components/ServerSettingsD
 
 import { getStorageString, StorageKeys } from '../../common/localStorage';
 import { CustomSuspense } from '../../components/CustomSuspense/CustomSuspense';
+import { autorun, reaction } from 'mobx';
+import { store } from '../../store/Store';
 
 const DRAWER_WIDTH = 240;
 
@@ -38,7 +40,20 @@ export default function AppPage(props: {routeName?: string}) {
 }
 
 function MainPane (props: {routeName?: string}) {
-  return <div className={styles.mainPane}>
+  const mainPaneElement = useRef<HTMLDivElement>(null);
+
+
+  useEffect(() => {
+    const mainPaneWidth = mainPaneElement.current?.clientWidth || 0;
+    store.windowPropertyStore.updateMainPaneWidth(mainPaneWidth);
+    const destroy = reaction(() => store.windowPropertyStore.width, () => {
+      const mainPaneWidth = mainPaneElement.current?.clientWidth || 0;
+      store.windowPropertyStore.updateMainPaneWidth(mainPaneWidth);
+    })
+    return destroy;
+  })
+
+  return <div className={styles.mainPane} ref={mainPaneElement}>
     <Tabs />
     {props.routeName === "server_settings" && <CustomSuspense><ServerSettingsPane/></CustomSuspense>}
     {props.routeName === 'server_messages' && <CustomSuspense><MessagePane /></CustomSuspense>}

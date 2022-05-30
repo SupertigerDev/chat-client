@@ -1,6 +1,6 @@
 import { Client } from "chat-api";
 import { Message, MessageType } from "chat-api/build/common/Message";
-import { ServerChannel } from "chat-api/build/store/Channels";
+import { Channel } from "chat-api/build/store/Channels";
 import { makeAutoObservable, runInAction } from "mobx";
 import { client } from "../common/client";
 
@@ -39,14 +39,14 @@ export class MessageStore {
     if (index === -1) return;
     messages.splice(index, 1);
   }
-  async loadChannelMessages(channel: ServerChannel, force = false) {
+  async loadChannelMessages(channel: Channel, force = false) {
     if (!force && this.channelMessages[channel._id]) return;
     const messages = await channel.getMessages();
     runInAction(() => {
       this.channelMessages[channel._id] = messages;
     })
   }
-  async sendMessage(channel: ServerChannel, content: string) {
+  async sendMessage(channel: Channel, content: string) {
 
     const user = client.account.user;
     if (!user) return;

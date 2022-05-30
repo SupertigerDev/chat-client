@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import ServerSettings, { ServerSetting } from '../../common/ServerSettings';
 import { CustomSuspense } from '../CustomSuspense/CustomSuspense';
+import ServerSettingsHeader from '../ServerSettingsHeader/ServerSettingsHeader';
 import styles from './ServerSettingsPane.module.scss'
 
 export default function ServerSettingsPane() {
@@ -16,6 +17,13 @@ export default function ServerSettingsPane() {
     return null;
   }
 
-  return (<CustomSuspense><setting.element/></CustomSuspense>);
+  return (
+    <div className={styles.pane}>
+      <ServerSettingsHeader/>
+      <CustomSuspense>
+        <setting.element/>
+      </CustomSuspense>
+    </div>
+  );
 
 }
