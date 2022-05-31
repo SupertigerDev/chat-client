@@ -51,17 +51,10 @@ export class TabStore {
 
   selectTab(path: string, navigate: NavigateFunction) {
     runInAction(() => {
-      const tab = this.tabs.find(tab => tab.path === path);
-      if (!tab) return;
-
-      if (!this.lastPath) {
-        this.lastPath = tab.path;
-        return;
-      }
-
-      if (this.lastPath === tab.path) return 
-      this.lastPath = tab.path;
-      navigate(tab.path);
+      console.log(path);
+      if (this.lastPath === path) return 
+      this.lastPath = path;
+      navigate(path);
     });
   }
   

@@ -9,7 +9,7 @@ import CustomButton from '../CustomButton/CustomButton';
 import env from '../../common/env';
 import { autorun } from 'mobx';
 import { classNames, conditionalClass } from '../../common/classNames';
-import { formatTimestamp } from '../../common/Date';
+import { formatTimestamp } from '../../common/date';
 import { Icon } from '../Icon/Icon';
 
 export default function ServerSettingsInvite() {
@@ -30,6 +30,8 @@ export default function ServerSettingsInvite() {
   
   useEffect(() => {
     getInvites(serverId!).then((invites) => setInvites(invites.reverse()));
+
+    console.log("sd");
 
     store.tabStore.openTab({
       title: "Settings - Invites",

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { classNames, conditionalClass } from '../../common/classNames';
-import { formatTimestamp } from '../../common/Date';
+import { formatTimestamp } from '../../common/date';
 import { LocalMessage, MessageSentStatus } from '../../store/MessageStore';
 import Avatar from '../Avatar/Avatar';
 import { Icon } from '../Icon/Icon';
