@@ -10,23 +10,30 @@ interface Item {
   onClick?: () => void;
   separator?: boolean;
   alert?: boolean
+  disabled?: boolean
 }
 
-interface Props {
+export interface ContextMenuProps {
   items: Item[]
   onClose?: () => void,
+  triggerClassName?: string,
   position?: {
     x: number;
     y: number;
   }
 }
 
-export function ContextMenu(props: Props) {
+export default function ContextMenu(props: ContextMenuProps) {
   const contextMenuElement = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<{ top: number, left: number } | undefined>();
 
 
-  const handleOutsideClick = useCallback(() => props.onClose?.(), []);
+  const handleOutsideClick = useCallback((e: any) => {
+    if (props.triggerClassName) {
+      if (e.target.closest("." + props.triggerClassName)) {return};
+    }
+    props.onClose?.()
+  }, []);
   
   const handleOutsideRightClick = useCallback((e: any) => {
     if (e.target.closest("."+styles.contextMenu)) {
@@ -88,7 +95,7 @@ export function ContextMenu(props: Props) {
 
 function Item(props: {item: Item}) {
   return (
-    <div className={classNames(styles.item, conditionalClass(props.item.alert, styles.alert))} onClick={props.item.onClick}>
+    <div className={classNames(styles.item, conditionalClass(props.item.alert, styles.alert), conditionalClass(props.item.disabled, styles.disabled))} onClick={props.item.onClick}>
       <Icon name={props.item.icon!} size={18} color={props.item.alert ? 'var(--alert-color)' : undefined}  />
       <span className={styles.label} >{props.item.label}</span>
     </div>

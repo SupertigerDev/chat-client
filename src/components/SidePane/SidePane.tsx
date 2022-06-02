@@ -6,12 +6,12 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Icon } from '../Icon/Icon';
 import Avatar from '../Avatar/Avatar';
 import Modal from '../Modal/Modal';
-import { MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { AddServer } from '../AddServer/AddServer';
 import { INBOX, SERVER_MESSAGES, SERVER_SETTINGS_INVITES } from '../../common/RouterEndpoints';
 import { classNames, conditionalClass } from '../../common/classNames';
-import { ContextMenu } from '../ContextMenu/ContextMenu';
-import { store } from '../../store/Store';
+
+import { ContextMenuServer } from '../ContextMenuServer/ContextMenuServer';
 
 
 export default function SidePane () {
@@ -71,30 +71,27 @@ function Item(props: {iconName: string, selected?: boolean, onClick?: () => void
 
 
 const  ServerList = observer(() => {
-  const navigate = useNavigate();
-  const {serverId} = useParams();
-
+  const {serverId: selectedServerId} = useParams();
   const [contextPosition, setContextPosition] = useState<{x: number, y: number} | undefined>();
+  const [contextServerId, setContextServerId] = useState<string | undefined>();
 
 
   const onContextMenu = (event: MouseEvent, serverId: string) => {
     event.preventDefault();
+    setContextServerId(serverId);
     setContextPosition({x: event.clientX, y: event.clientY});
   }
 
 
   return <div className={styles.serverList}>
-    <ContextMenu items={[
-      {icon: 'markunread_mailbox', label: "Mark As Read"},
-      {separator: true},
-      {icon: 'mail', label: "Invites", onClick: () => store.tabStore.selectTab(SERVER_SETTINGS_INVITES(serverId!), navigate)},
-      {icon: 'settings', label: "Settings"},
-      {separator: true},
-      {icon: 'copy', label: "Copy ID"},
-      {separator: true},
-      {icon: 'logout', label: "Leave", alert: true},
-    ]} position={contextPosition} onClose={() => setContextPosition(undefined)} />
-    {client.servers.array.map((server) => <ServerItem selected={ server._id === serverId } server={server} key={server._id} onContextMenu={e => onContextMenu(e, server._id)} />)}
+    <ContextMenuServer position={contextPosition} onClose={() => setContextPosition(undefined)} serverId={contextServerId} />
+    {client.servers.array.map(server => (
+      <ServerItem 
+        selected={ server._id === selectedServerId }
+        server={server} key={server._id}
+        onContextMenu={e => onContextMenu(e, server._id)}
+      />
+    ))}
   </div>
 });
 

@@ -31,7 +31,6 @@ export default function ServerSettingsInvite() {
   useEffect(() => {
     getInvites(serverId!).then((invites) => setInvites(invites.reverse()));
 
-    console.log("sd");
 
     store.tabStore.openTab({
       title: "Settings - Invites",
